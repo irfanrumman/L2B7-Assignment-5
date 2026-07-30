@@ -1,50 +1,67 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { Moon, Sun, Menu, X, LogOut, LayoutDashboard, Settings, User } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { useAuth } from '@/lib/auth-cotext'
+import Link from "next/link";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import {
+  Moon,
+  Sun,
+  Menu,
+  X,
+  LogOut,
+  LayoutDashboard,
+  Settings,
+  User,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/lib/auth-context";
 
-import { useTheme } from '@/lib/theme-context'
+import { useTheme } from "@/lib/theme-context";
 import {
   DropdownMenu,
   DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const navItems = [
-  { label: 'Properties', href: '/properties' },
-  { label: 'How It Works', href: '#' },
-  { label: 'Contact', href: '#' },
-]
-
+  { label: "Properties", href: "/properties" },
+  { label: "How It Works", href: "/" },
+  { label: "Contact", href: "/contact" },
+];
 
 export function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const { user, logout } = useAuth()
-  const { theme, toggleTheme } = useTheme()
-  const router = useRouter()
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
+  const router = useRouter();
 
   const handleLogout = () => {
-    logout()
-    router.push('/')
-    setIsMenuOpen(false)
-  }
+    logout();
+    router.push("/");
+    setIsMenuOpen(false);
+  };
 
   const handleDashboard = (role: string) => {
-    if (user?.role === 'tenant') {
-      router.push('/dashboard')
-    } else if (user?.role === 'landlord') {
-      router.push('/dashboard')
-    } else if (user?.role === 'admin') {
-      router.push('/dashboard')
+    if (user?.role === "tenant") {
+      router.push("/dashboard");
+    } else if (user?.role === "landlord") {
+      router.push("/dashboard");
+    } else if (user?.role === "admin") {
+      router.push("/dashboard");
     }
-  }
+  };
+  //   const handleDashboard = (role: string) => {
+  //     if (user?.role === 'tenant') {
+  //       router.push('/dashboard/tenant')
+  //     } else if (user?.role === 'landlord') {
+  //       router.push('/dashboard/landlord')
+  //     } else if (user?.role === 'admin') {
+  //       router.push('/dashboard/admin')
+  //     }
+  //   }
 
   return (
     <nav className="sticky top-0 z-50 border-b border-border bg-card shadow-sm">
@@ -78,7 +95,7 @@ export function Navbar() {
               onClick={toggleTheme}
               aria-label="Toggle theme"
             >
-              {theme === 'light' ? (
+              {theme === "light" ? (
                 <Moon className="h-5 w-5" />
               ) : (
                 <Sun className="h-5 w-5" />
@@ -100,14 +117,18 @@ export function Navbar() {
                 <DropdownMenuContent align="end" className="w-56">
                   <DropdownMenuLabel>
                     <div className="flex flex-col gap-1">
-                      <p className="text-sm font-medium capitalize">{user.email}</p>
+                      <p className="text-sm font-medium capitalize">
+                        {user.email}
+                      </p>
                       <p className="text-xs text-muted-foreground capitalize">
                         {user.role}
                       </p>
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => handleDashboard(user.role as string)}>
+                  <DropdownMenuItem
+                    onClick={() => handleDashboard(user.role as string)}
+                  >
                     <LayoutDashboard className="w-4 h-4 mr-2" />
                     <span>Dashboard</span>
                   </DropdownMenuItem>
@@ -124,15 +145,10 @@ export function Navbar() {
               </DropdownMenu>
             ) : (
               <div className="hidden sm:flex items-center gap-2">
-                <Button 
-                  variant="outline" 
-                  onClick={() => router.push('/auth/login')}
-                >
-                  Sign In
+                <Button variant="outline" onClick={() => router.push("/login")}>
+                  Login
                 </Button>
-                <Button 
-                  onClick={() => router.push('/auth/register')}
-                >
+                <Button onClick={() => router.push("/register")}>
                   Create Account
                 </Button>
               </div>
@@ -162,7 +178,10 @@ export function Navbar() {
           <div className="flex flex-col gap-2 px-4 py-4">
             {navItems.map((item) => (
               <Link key={item.href} href={item.href}>
-                <Button variant="ghost" className="w-full justify-start text-foreground">
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start text-foreground"
+                >
                   {item.label}
                 </Button>
               </Link>
@@ -188,16 +207,16 @@ export function Navbar() {
               </>
             ) : (
               <>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   className="w-full"
-                  onClick={() => router.push('/auth/login')}
+                  onClick={() => router.push("/auth/login")}
                 >
                   Sign In
                 </Button>
-                <Button 
+                <Button
                   className="w-full"
-                  onClick={() => router.push('/auth/register')}
+                  onClick={() => router.push("/auth/register")}
                 >
                   Create Account
                 </Button>
@@ -207,5 +226,5 @@ export function Navbar() {
         </div>
       )}
     </nav>
-  )
+  );
 }

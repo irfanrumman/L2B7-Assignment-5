@@ -4,10 +4,8 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { Menu, X, Home, Moon, Sun, LogOut } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-
-import {useAuth} from '@/lib/auth-cotext'
+import { useAuth } from '@/lib/auth-context'
 import { useTheme } from '@/lib/theme-context'
-
 import { useRouter } from 'next/navigation'
 
 export function Header() {
@@ -70,7 +68,7 @@ export function Header() {
             </Button>
           ) : (
             <Link href="/login">
-              <Button>Sign In</Button>
+              <Button>Login</Button>
             </Link>
           )}
         </div>
@@ -126,8 +124,8 @@ export function Header() {
                 Logout
               </Button>
             ) : (
-              <Link href="/auth/login" className="w-full">
-                <Button className="w-full">Sign In</Button>
+              <Link href="/login" className="w-full">
+                <Button className="w-full">Login</Button>
               </Link>
             )}
           </div>
