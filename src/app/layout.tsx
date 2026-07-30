@@ -45,6 +45,10 @@
 // import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
+import { Header } from '@/components/shared/header'
+import { Footer } from '@/components/shared/footer'
+import { AuthProvider } from '@/lib/auth-cotext'
+import { ThemeProvider } from '@/lib/theme-context'
 
 export const metadata: Metadata = {
   title: 'RentNest - Find Your Perfect Home',
@@ -85,7 +89,15 @@ export default function RootLayout({
   return (
     <html lang="en" className="bg-background">
       <body className="antialiased">
+
+       <ThemeProvider>
+         <AuthProvider>
+          <Header />
         {children}
+
+        <Footer />
+        </AuthProvider>
+       </ThemeProvider>
         {/* {process.env.NODE_ENV === 'production' && <Analytics />} */}
       </body>
     </html>
