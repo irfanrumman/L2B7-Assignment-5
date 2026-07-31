@@ -127,3 +127,13 @@ export interface RegisterPayload {
   password: string;
   role: Extract<UserRole, "TENANT" | "LANDLORD">;
 }
+
+
+export interface CreatePropertyPayload {
+  title: string;
+  description: string;
+  location: string;
+  price: number;
+  categoryId: string;
+  image: string;
+}
