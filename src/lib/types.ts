@@ -1,5 +1,3 @@
-
-
 export type UserRole = "TENANT" | "LANDLORD" | "ADMIN";
 export type UserStatus = "ACTIVE" | "BANNED" | "INACTIVE";
 export type RentalRequestStatus = "PENDING" | "APPROVED" | "REJECTED" | "ACTIVE" | "COMPLETED";
@@ -12,9 +10,48 @@ export interface Property {
   description: string;
   location: string;
   price: number;
+  image: string | null;
+  featured: boolean;
   isAvailable: boolean;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface CategoryRef {
+  id: string;
+  name: string;
+}
+
+export interface LandlordRef {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+}
+
+// GET /api/properties (list) endpoint এর shape —
+// category ar landlord join kora thake (nested object hisebe)
+export interface PropertyListItem extends Property {
+  category: CategoryRef;
+  landlord: LandlordRef;
+}
+
+export interface PaginationMeta {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}
+
+// GET /api/properties এর pura response shape (double-nested data)
+export interface PropertiesApiResponse {
+  success: boolean;
+  statusCode: number;
+  message: string;
+  data: {
+    meta: PaginationMeta;
+    data: PropertyListItem[];
+  };
 }
 
 export interface RentalRequest {
@@ -66,7 +103,6 @@ export interface AdminUser extends BaseUser {
 
 export type User = TenantUser | LandlordUser | AdminUser;
 
-
 export interface ApiResponse<T> {
   success: boolean;
   statusCode: number;
@@ -74,14 +110,12 @@ export interface ApiResponse<T> {
   data: T;
 }
 
-
 export interface MeResponseData {
   user: User;
 }
 
 export type MeApiResponse = ApiResponse<MeResponseData>;
 
-// Login/Register payload types
 export interface LoginPayload {
   email: string;
   password: string;
@@ -91,5 +125,5 @@ export interface RegisterPayload {
   name: string;
   email: string;
   password: string;
-  role: Extract<UserRole, "TENANT" | "LANDLORD">; 
+  role: Extract<UserRole, "TENANT" | "LANDLORD">;
 }
