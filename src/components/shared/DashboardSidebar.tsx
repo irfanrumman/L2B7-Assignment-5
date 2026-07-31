@@ -31,7 +31,7 @@ const menuItems = {
     {
       title: "Dashboard",
       icon: LayoutDashboard,
-      href: "/dashboard",
+      href: "/dashboard/tenant",
     },
     {
       title: "My Properties",
@@ -48,7 +48,7 @@ const menuItems = {
     {
       title: "Dashboard",
       icon: LayoutDashboard,
-      href: "/dashboard",
+      href: "/dashboard/landlord",
     },
     {
       title: "My Properties",
@@ -70,7 +70,7 @@ const menuItems = {
     {
       title: "Dashboard",
       icon: LayoutDashboard,
-      href: "/dashboard",
+      href: "/dashboard/admin",
     },
     {
       title: "Users",
@@ -90,25 +90,20 @@ const menuItems = {
   ],
 };
 
-export function DashboardSidebar() {
+export function DashboardSidebar({role}: { role: "tenant" | "landlord" | "admin" }) {
   const pathname = usePathname();
-  const { user } = useAuth();
-
-  if (!user) return null;
-
-  const items =
-    menuItems[user.role as keyof typeof menuItems] || menuItems.tenant;
+  const items = menuItems[role] || menuItems.tenant;
 
   return (
-    <Sidebar>
-      <SidebarHeader>
+    <Sidebar className="top-16 h-[calc(100vh-4rem)]">
+      {/* <SidebarHeader>
         <div className="flex items-center gap-2 px-2">
           <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white font-bold">
             N
           </div>
           <span className="font-bold text-foreground">RentNest</span>
         </div>
-      </SidebarHeader>
+      </SidebarHeader> */}
 
       <SidebarContent>
         <SidebarMenu>
@@ -160,7 +155,7 @@ export function DashboardSidebar() {
 
       <SidebarFooter>
         <div className="text-xs text-muted-foreground">
-          <p>© 2024 RentNest</p>
+          <p>© 2026 RentNest</p>
           <p>All rights reserved</p>
         </div>
       </SidebarFooter>
