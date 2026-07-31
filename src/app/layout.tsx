@@ -108,12 +108,13 @@ import { AuthProvider } from "@/lib/auth-context";
 import { ThemeProvider } from "@/lib/theme-context";
 import { Navbar } from "@/components/shared/navbar";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "RentNest - Find Your Perfect Home",
   description:
     "Modern rental property marketplace connecting tenants with landlords",
-  generator: "v0.app",
+  creator: "Irfan Uddin",
   icons: {
     icon: [
       {
@@ -149,6 +150,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="bg-background">
       <body className="antialiased">
+         <Toaster position="top-right" richColors />
         <TooltipProvider>
           <ThemeProvider>
             <AuthProvider>

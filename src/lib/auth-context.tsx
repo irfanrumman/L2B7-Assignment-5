@@ -1,60 +1,79 @@
-'use client'
+"use client";
 
-import React, { createContext, useContext, useState, useEffect } from 'react'
-
-export type UserRole = 'tenant' | 'landlord' | 'admin' | null
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from "react";
+import { User } from "@/lib/types";
+import { getMe } from "../service/getMe";
+import { logout as logoutService } from "../service/logout";
 
 interface AuthContextType {
-  user: { email: string; role: UserRole } | null
-  login: (email: string, role: UserRole) => void
-  logout: () => void
-  isAuthenticated: boolean
+  user: User | null;
+  loading: boolean;
+  isAuthenticated: boolean;
+  logout: () => Promise<void>;
+  setUser: (user: User | null) => void;
+  refetchUser: () => Promise<void>;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined)
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<{ email: string; role: UserRole } | null>(null)
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  // Hydrate from localStorage
-  useEffect(() => {
-    if (typeof localStorage === 'undefined') return
-    const storedUser = localStorage.getItem('auth_user')
-    if (storedUser) {
-      try {
-        setUser(JSON.parse(storedUser))
-      } catch (e) {
-        console.error('[v0] Failed to parse stored user:', e)
+  const fetchCurrentUser = async () => {
+    try {
+      const result = await getMe();
+
+      if (result.success) {
+        setUser(result.data.user);
+      } else {
+        setUser(null);
       }
+    } catch (error) {
+      console.error(error);
+      setUser(null);
+    } finally {
+      setLoading(false);
     }
-  }, [])
+  };
 
-  const login = (email: string, role: UserRole) => {
-    const newUser = { email, role }
-    setUser(newUser)
-    if (typeof localStorage !== 'undefined') {
-      localStorage.setItem('auth_user', JSON.stringify(newUser))
-    }
-  }
+  useEffect(() => {
+    fetchCurrentUser();
+  }, []);
 
-  const logout = () => {
-    setUser(null)
-    if (typeof localStorage !== 'undefined') {
-      localStorage.removeItem('auth_user')
-    }
-  }
+  const logout = async () => {
+    await logoutService();
+    setUser(null);
+  };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!user }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        isAuthenticated: !!user,
+        logout,
+        setUser,
+        refetchUser: fetchCurrentUser,
+      }}
+    >
       {children}
     </AuthContext.Provider>
-  )
+  );
 }
 
 export function useAuth() {
-  const context = useContext(AuthContext)
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider')
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
   }
-  return context
+
+  return context;
 }

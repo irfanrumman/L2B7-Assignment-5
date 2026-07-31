@@ -11,12 +11,11 @@ import {
   LogOut,
   LayoutDashboard,
   Settings,
-  User,
+  User as UserIcon, 
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/lib/auth-context";
-
 import { useTheme } from "@/lib/theme-context";
+import { useAuth } from "@/lib/auth-context";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -34,9 +33,11 @@ const navItems = [
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user, logout } = useAuth();
+  const { user, logout } = useAuth(); 
   const { theme, toggleTheme } = useTheme();
   const router = useRouter();
+
+  console.log("Navbar user:", user);
 
   const handleLogout = () => {
     logout();
@@ -44,30 +45,23 @@ export function Navbar() {
     setIsMenuOpen(false);
   };
 
-  const handleDashboard = (role: string) => {
-    if (user?.role === "tenant") {
+  const handleDashboard = () => {
+    if (!user) return; 
+
+ 
+    if (user.role === "TENANT") {
       router.push("/dashboard");
-    } else if (user?.role === "landlord") {
-      router.push("/dashboard");
-    } else if (user?.role === "admin") {
-      router.push("/dashboard");
+    } else if (user.role === "LANDLORD") {
+      router.push("/dashboard/landlord");
+    } else if (user.role === "ADMIN") {
+      router.push("/dashboard/admin");
     }
   };
-  //   const handleDashboard = (role: string) => {
-  //     if (user?.role === 'tenant') {
-  //       router.push('/dashboard/tenant')
-  //     } else if (user?.role === 'landlord') {
-  //       router.push('/dashboard/landlord')
-  //     } else if (user?.role === 'admin') {
-  //       router.push('/dashboard/admin')
-  //     }
-  //   }
 
   return (
     <nav className="sticky top-0 z-50 border-b border-border bg-card shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
           <Link href="/" className="flex items-center gap-2 font-bold text-2xl">
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white font-bold">
               N
@@ -75,7 +69,6 @@ export function Navbar() {
             <span className="text-foreground hidden sm:inline">RentNest</span>
           </Link>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-1">
             {navItems.map((item) => (
               <Link key={item.href} href={item.href}>
@@ -86,49 +79,29 @@ export function Navbar() {
             ))}
           </div>
 
-          {/* Right side items */}
           <div className="flex items-center gap-2">
-            {/* Theme Toggle */}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggleTheme}
-              aria-label="Toggle theme"
-            >
-              {theme === "light" ? (
-                <Moon className="h-5 w-5" />
-              ) : (
-                <Sun className="h-5 w-5" />
-              )}
+            <Button variant="ghost" size="icon" onClick={toggleTheme} aria-label="Toggle theme">
+              {theme === "light" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
             </Button>
 
-            {/* User Menu or Login */}
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="rounded-full w-10 h-10 bg-primary/10"
-                  >
-                    <User className="h-5 w-5 text-primary" />
+                  <Button variant="ghost" size="icon" className="rounded-full w-10 h-10 bg-primary/10">
+                    <UserIcon className="h-5 w-5 text-primary" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
                   <DropdownMenuLabel>
                     <div className="flex flex-col gap-1">
-                      <p className="text-sm font-medium capitalize">
-                        {user.email}
-                      </p>
+                      <p className="text-sm font-medium">{user.name}</p>
                       <p className="text-xs text-muted-foreground capitalize">
-                        {user.role}
+                        {user.role.toLowerCase()}
                       </p>
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    onClick={() => handleDashboard(user.role as string)}
-                  >
+                  <DropdownMenuItem onClick={handleDashboard}>
                     <LayoutDashboard className="w-4 h-4 mr-2" />
                     <span>Dashboard</span>
                   </DropdownMenuItem>
@@ -154,7 +127,6 @@ export function Navbar() {
               </div>
             )}
 
-            {/* Mobile Menu Button */}
             <Button
               variant="ghost"
               size="icon"
@@ -162,26 +134,18 @@ export function Navbar() {
               className="md:hidden"
               aria-label="Toggle menu"
             >
-              {isMenuOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
+              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </Button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Navigation */}
       {isMenuOpen && (
         <div className="border-t border-border bg-card md:hidden">
           <div className="flex flex-col gap-2 px-4 py-4">
             {navItems.map((item) => (
               <Link key={item.href} href={item.href}>
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start text-foreground"
-                >
+                <Button variant="ghost" className="w-full justify-start text-foreground">
                   {item.label}
                 </Button>
               </Link>
@@ -191,33 +155,22 @@ export function Navbar() {
                 <Button
                   variant="ghost"
                   className="w-full justify-start gap-2 text-foreground"
-                  onClick={() => handleDashboard(user.role as string)}
+                  onClick={handleDashboard}
                 >
                   <LayoutDashboard className="h-4 w-4" />
                   Dashboard
                 </Button>
-                <Button
-                  variant="outline"
-                  className="w-full justify-start gap-2"
-                  onClick={handleLogout}
-                >
+                <Button variant="outline" className="w-full justify-start gap-2" onClick={handleLogout}>
                   <LogOut className="h-4 w-4" />
                   Logout
                 </Button>
               </>
             ) : (
               <>
-                <Button
-                  variant="outline"
-                  className="w-full"
-                  onClick={() => router.push("/auth/login")}
-                >
+                <Button variant="outline" className="w-full" onClick={() => router.push("/login")}>
                   Sign In
                 </Button>
-                <Button
-                  className="w-full"
-                  onClick={() => router.push("/auth/register")}
-                >
+                <Button className="w-full" onClick={() => router.push("/register")}>
                   Create Account
                 </Button>
               </>

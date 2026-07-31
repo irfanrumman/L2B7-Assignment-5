@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import LoginForm from '../_components/LoginForm'
+import { Suspense } from 'react'
 
 
 export default function LoginPage() {
@@ -17,7 +18,9 @@ export default function LoginPage() {
           <p className="text-muted-foreground">Log in to your RentNest account</p>
         </div>
         
-        <LoginForm />
+         <Suspense fallback={<div className="text-center text-muted-foreground">Loading...</div>}>
+          <LoginForm />
+        </Suspense>
         {/* Form
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Email */}

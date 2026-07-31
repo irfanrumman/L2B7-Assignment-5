@@ -3,8 +3,6 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Link from "next/link";
-import { Header } from "@/components/shared/header";
-import { Footer } from "@/components/shared/footer";
 import { useAuth } from "@/lib/auth-context";
 import {
   Users,
@@ -131,8 +129,14 @@ export default function AdminDashboard() {
   const router = useRouter();
   const { user, isAuthenticated } = useAuth();
 
+  console.log("AdminDashboard user:", user);
+
   useEffect(() => {
     // if (!isAuthenticated || user?.role !== 'admin') {
+    //   router.push('/login')
+    // }
+
+    //  if ( user?.role !== 'ADMIN') {
     //   router.push('/login')
     // }
   }, [isAuthenticated, user, router]);
@@ -143,7 +147,6 @@ export default function AdminDashboard() {
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      {/* <Header /> */}
 
       <main className="flex-1">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
@@ -401,7 +404,6 @@ export default function AdminDashboard() {
         </div>
       </main>
 
-      {/* <Footer /> */}
     </div>
   );
 }
