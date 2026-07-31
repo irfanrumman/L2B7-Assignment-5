@@ -5,6 +5,8 @@ import {
   useContext,
   useEffect,
   useState,
+  useCallback, // 👈 নতুন import
+  useMemo,     // 👈 নতুন import
   ReactNode,
 } from "react";
 import { User } from "@/lib/types";
@@ -26,7 +28,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchCurrentUser = async () => {
+  // 👇 useCallback: এই function এর reference এখন stable থাকবে,
+  // প্রতি render এ নতুন তৈরি হবে না (dependency array খালি, তাই কখনো বদলাবে না)
+  const fetchCurrentUser = useCallback(async () => {
     try {
       const result = await getMe();
 
@@ -41,31 +45,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchCurrentUser();
-  }, []);
+  }, [fetchCurrentUser]);
 
-  const logout = async () => {
+  const logout = useCallback(async () => {
     await logoutService();
     setUser(null);
-  };
+  }, []);
 
-  return (
-    <AuthContext.Provider
-      value={{
-        user,
-        loading,
-        isAuthenticated: !!user,
-        logout,
-        setUser,
-        refetchUser: fetchCurrentUser,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+  // 👇 useMemo: context এর value object-ও stable রাখছি,
+  // নাহলে user/loading না বদলেও object reference প্রতি render এ নতুন হতো
+  const value = useMemo(
+    () => ({
+      user,
+      loading,
+      isAuthenticated: !!user,
+      logout,
+      setUser,
+      refetchUser: fetchCurrentUser,
+    }),
+    [user, loading, logout, fetchCurrentUser]
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
