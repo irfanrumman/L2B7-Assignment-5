@@ -1,9 +1,27 @@
-import React from 'react'
+import { getAdminUsersAction } from "../_actions/adminUserAction";
+import { UserManagementTable } from "../_components/UserManegmentTable";
 
-const UserPage = () => {
+export default async function AdminUsersPage() {
+  const result = await getAdminUsersAction();
+
   return (
-    <div>User Page</div>
-  )
-}
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold text-foreground">User Management</h1>
+        <p className="text-muted-foreground">
+          View and manage all platform users. Ban or unban accounts as needed.
+        </p>
+      </div>
 
-export default UserPage
+      {!result.success ? (
+        <p className="text-destructive">{result.message}</p>
+      ) : result.data.length === 0 ? (
+        <div className="rounded-lg border border-dashed border-border p-12 text-center">
+          <p className="text-muted-foreground">No users found</p>
+        </div>
+      ) : (
+        <UserManagementTable users={result.data} />
+      )}
+    </div>
+  );
+}

@@ -358,3 +358,23 @@ export interface ConfirmPaymentResponseData {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface AdminUserListItem {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  role: UserRole;
+  status: UserStatus;
+  createdAt: string;
+}
+
+export interface AdminUsersApiResponse {
+  success: boolean;
+  statusCode: number;
+  message: string;
+  data: {
+    meta: PaginationMeta;
+    data: AdminUserListItem[];
+  };
+}
