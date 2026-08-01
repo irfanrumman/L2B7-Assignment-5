@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
-import { deleteProperty } from "../_actions/landlordPropertyActions";
+import { deletePropertyAction } from "../_actions/landlordPropertyActions";
 
 import {
   AlertDialog,
@@ -38,7 +38,7 @@ export default function DeletePropertyDialog({
     setLoading(true);
 
     try {
-      const result = await deleteProperty(propertyId);
+      const result = await deletePropertyAction(propertyId);
 
       if (result.success) {
         toast.success(result.message || "Property deleted successfully.");

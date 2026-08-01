@@ -20,6 +20,7 @@ export interface Property {
 export interface CategoryRef {
   id: string;
   name: string;
+  description: string;
 }
 
 export interface LandlordRef {
@@ -27,13 +28,29 @@ export interface LandlordRef {
   name: string;
   email: string;
   phone: string | null;
+  role: "LANDLORD";
 }
 
-// GET /api/properties (list) endpoint এর shape —
-// category ar landlord join kora thake (nested object hisebe)
+
 export interface PropertyListItem extends Property {
   category: CategoryRef;
   landlord: LandlordRef;
+}
+
+export interface LandlordPropertyItem extends Property {
+  category: CategoryRef;
+  landlord: LandlordRef;
+  reviews: Review[];
+}
+
+export interface LandlordPropertiesApiResponse {
+  success: boolean;
+  statusCode: number;
+  message: string;
+  data: {
+    meta: PaginationMeta;
+    data: LandlordPropertyItem[];
+  };
 }
 
 export interface PaginationMeta {
@@ -136,4 +153,131 @@ export interface CreatePropertyPayload {
   price: number;
   categoryId: string;
   image: string;
+}
+
+
+export interface TenantRef {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+}
+
+export interface PropertyRef {
+  id: string;
+  title: string;
+  location: string;
+}
+
+export interface RentalRequestListItem {
+  id: string;
+  tenantId: string;
+  propertyId: string;
+  status: RentalRequestStatus;
+  moveInDate: string;
+  moveOutDate: string;
+  message: string;
+  createdAt: string;
+  updatedAt: string;
+  tenant: TenantRef;
+  property: PropertyRef;
+}
+
+export interface RentalRequestsApiResponse {
+  success: boolean;
+  statusCode: number;
+  message: string;
+  data: {
+    data: RentalRequestListItem[];
+    meta: PaginationMeta;
+  };
+}
+
+
+export interface LandlordRentalRef {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+}
+
+export interface PropertyRentalRef {
+  id: string;
+  title: string;
+  location: string;
+  price: number;
+  isAvailable: boolean;
+  landlord: LandlordRentalRef;
+}
+
+// GET /api/rentals (tenant er nijer request history) endpoint er shape
+export interface TenantRentalRequest {
+  id: string;
+  tenantId: string;
+  propertyId: string;
+  status: RentalRequestStatus;
+  moveInDate: string;
+  moveOutDate: string;
+  message: string;
+  createdAt: string;
+  updatedAt: string;
+  property: PropertyRentalRef;
+}
+
+export interface RentalsApiResponse {
+  success: boolean;
+  statusCode: number;
+  message: string;
+  data: {
+    data: TenantRentalRequest[];
+    meta: PaginationMeta;
+  };
+}
+
+export type PaymentMethod = "CARD";
+export type PaymentProvider = "STRIPE";
+export type PaymentStatus = "PENDING" | "PAID" | "FAILED";
+
+export interface PropertyPaymentRef {
+  id: string;
+  title: string;
+  location: string;
+}
+
+export interface RentalRequestPaymentRef {
+  id: string;
+  tenantId: string;
+  propertyId: string;
+  status: RentalRequestStatus;
+  moveInDate: string;
+  moveOutDate: string;
+  message: string;
+  createdAt: string;
+  updatedAt: string;
+  property: PropertyPaymentRef;
+}
+
+// GET /api/payments endpoint er shape
+export interface PaymentListItem {
+  id: string;
+  rentalRequestId: string;
+  transactionId: string;
+  amount: number;
+  method: PaymentMethod;
+  provider: PaymentProvider;
+  status: PaymentStatus;
+  paidAt: string;
+  createdAt: string;
+  updatedAt: string;
+  rentalRequest: RentalRequestPaymentRef;
+}
+
+export interface PaymentsApiResponse {
+  success: boolean;
+  statusCode: number;
+  message: string;
+  data: {
+    data: PaymentListItem[];
+    meta: PaginationMeta;
+  };
 }

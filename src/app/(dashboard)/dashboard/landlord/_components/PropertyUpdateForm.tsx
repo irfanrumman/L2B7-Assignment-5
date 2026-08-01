@@ -3,7 +3,7 @@
 import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
 
-import { updateProperty } from "../_actions/landlordPropertyActions";
+import { updatePropertyAction } from "../_actions/landlordPropertyActions";
 import CategorySelect from "./CategorySelect";
 
 import { Button } from "@/components/ui/button";
@@ -47,7 +47,7 @@ export default function UpdatePropertyForm({
   property,
   categories,
 }: Props) {
-  const action = updateProperty.bind(null, property.id);
+  const action = updatePropertyAction.bind(null, property.id);
 
   const [state, formAction, pending] = useActionState(
     action,

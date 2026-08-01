@@ -3,29 +3,26 @@
 import Link from "next/link";
 import Image from "next/image";
 import { MapPin, Heart, ImageOff } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PropertyListItem } from "@/lib/types";
 
-
-
 export function PropertyCard({
   id,
   title,
-  description,
   price,
   location,
   isAvailable,
-  category,   
-  image,     
-  featured,   
+  category,
+  image,
+  featured,
 }: PropertyListItem) {
   return (
     <Link href={`/properties/${id}`}>
-      <Card className="group overflow-hidden transition-all hover:shadow-lg">
-        {/* Image Container */}
-        <div className="relative overflow-hidden bg-muted h-48 sm:h-56">
+      <Card className="group flex h-56 overflow-hidden transition-all hover:shadow-lg">
+        {/* Left — Image, pura height jure */}
+        <div className="relative w-2/5 shrink-0 overflow-hidden bg-muted">
           {image ? (
             <Image
               src={image}
@@ -35,24 +32,14 @@ export function PropertyCard({
               className="object-cover transition-transform group-hover:scale-105"
             />
           ) : (
-            <div className="h-full w-full bg-linear-to-br from-muted to-muted-foreground/10 flex items-center justify-center text-muted-foreground">
-              <ImageOff className="h-10 w-10" />
+            <div className="flex h-full w-full items-center justify-center text-muted-foreground">
+              <ImageOff className="h-8 w-8" />
             </div>
           )}
 
           {featured && (
-            <Badge variant="secondary" className="absolute top-3 right-3">
+            <Badge variant="secondary" className="absolute top-2 right-2 text-xs">
               Featured
-            </Badge>
-          )}
-
-          {isAvailable ? (
-            <Badge className="absolute bottom-3 left-3 bg-green-600 text-white hover:bg-green-600">
-              Available
-            </Badge>
-          ) : (
-            <Badge variant="destructive" className="absolute bottom-3 left-3">
-              Not Available
             </Badge>
           )}
 
@@ -63,55 +50,63 @@ export function PropertyCard({
               e.preventDefault();
               e.stopPropagation();
             }}
-            className="absolute top-3 left-3 rounded-full bg-card shadow-md hover:bg-primary hover:text-primary-foreground"
+            className="absolute top-2 left-2 h-8 w-8 rounded-full bg-card shadow-md hover:bg-primary hover:text-primary-foreground"
             aria-label="Save property"
           >
-            <Heart className="h-5 w-5" />
+            <Heart className="h-4 w-4" />
           </Button>
         </div>
 
-        {/* Content */}
-        <CardContent className="flex flex-col gap-4 pt-4">
+        {/* Right — Content, baki shob kichu */}
+        <div className="flex flex-1 min-w-0 flex-col justify-between p-4">
           <div>
-            <div className="flex items-center justify-between gap-2">
-              <h3 className="font-semibold text-foreground group-hover:text-primary transition line-clamp-2">
+            <div className="flex items-start justify-between gap-2">
+              <h3 className="font-semibold text-foreground group-hover:text-primary transition line-clamp-1">
                 {title}
               </h3>
-              <Badge variant="outline" className="shrink-0 capitalize">
+              <Badge variant="outline" className="shrink-0 capitalize text-xs">
                 {category.name}
               </Badge>
             </div>
+
             <div className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
-              <MapPin className="h-4 w-4" />
-              <span>{location}</span>
+              <MapPin className="h-3.5 w-3.5 shrink-0" />
+              <span className="truncate">{location}</span>
             </div>
           </div>
 
-          {/* Description */}
-          <p className="text-sm text-muted-foreground line-clamp-2">
-            {description}
-          </p>
-
-          {/* Price & CTA */}
-          <div className="flex items-center justify-between border-t border-border pt-4">
-            <div>
+          <div className="flex items-end justify-between gap-2 mt-3">
+            <div className="min-w-0">
               <p className="text-xs text-muted-foreground">Monthly Price</p>
-              <p className="font-bold text-lg text-primary">
+              <p className="font-bold text-lg text-primary truncate">
                 ${price.toLocaleString()}
               </p>
             </div>
-            <Button
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-              }}
-              size="sm"
-              disabled={!isAvailable}
-            >
-              {isAvailable ? "View" : "Unavailable"}
-            </Button>
+
+            <div className="flex flex-col items-end gap-1.5 shrink-0">
+              {isAvailable ? (
+                <Badge className="bg-green-600 text-white hover:bg-green-600 text-xs">
+                  Available
+                </Badge>
+              ) : (
+                <Badge variant="destructive" className="text-xs">
+                  Not Available
+                </Badge>
+              )}
+
+              <Button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+                size="sm"
+                disabled={!isAvailable}
+              >
+                {isAvailable ? "View" : "Unavailable"}
+              </Button>
+            </div>
           </div>
-        </CardContent>
+        </div>
       </Card>
     </Link>
   );

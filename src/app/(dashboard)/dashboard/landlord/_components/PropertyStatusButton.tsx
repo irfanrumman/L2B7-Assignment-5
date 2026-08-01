@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { updateRentalRequestStatus } from "../_actions/landlordPropertyActions";
+import { updateRentalRequestStatusAction } from "../_actions/landlordPropertyActions";
 
 import { Button } from "@/components/ui/button";
 
@@ -26,7 +26,7 @@ export default function StatusButtons({
     setLoading(status);
 
     try {
-      const result = await updateRentalRequestStatus(
+      const result = await updateRentalRequestStatusAction(
         requestId,
         status
       );

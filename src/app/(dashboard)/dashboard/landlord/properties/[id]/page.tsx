@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 
 import UpdatePropertyForm from "../../_components/PropertyUpdateForm";
 
-import  {getPropertyById}  from "../../_actions/landlordPropertyActions";
+import  {getPropertyByIdAction}  from "../../_actions/landlordPropertyActions";
 import { getCategories } from "@/service/categories";
 
 interface Props {
@@ -17,7 +17,7 @@ export default async function UpdatePropertyPage({
   const { id } = await params;
 
   const [propertyResult, categoryResult] = await Promise.all([
-    getPropertyById(id),
+    getPropertyByIdAction(id),
     getCategories(),
   ]);
 

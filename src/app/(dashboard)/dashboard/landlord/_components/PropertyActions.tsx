@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import {
-  updateRentalRequestStatus,
+  updateRentalRequestStatusAction
 } from "../_actions/landlordPropertyActions";
 
 import DeletePropertyDialog from "./DeleteProperty";
@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 
 interface Property {
   id: string;
-  requestId?: string; // যদি request থাকে
+  requestId?: string; 
 }
 
 interface Props {
@@ -37,7 +37,7 @@ export default function PropertyActions({ property }: Props) {
     setLoading(true);
 
     try {
-      const result = await updateRentalRequestStatus(
+      const result = await updateRentalRequestStatusAction(
         property.requestId,
         status
       );

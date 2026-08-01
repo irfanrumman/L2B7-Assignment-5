@@ -10,7 +10,7 @@ type ActionState = {
   message: string;
 };
 
-export async function updateProperty(
+export async function updatePropertyAction(
   propertyId: string,
   prevState: ActionState,
   formData: FormData
@@ -50,7 +50,7 @@ export async function updateProperty(
 
     const result = await res.json();
 
-    if (!res.ok) {
+    if (!result.success) {  
       return {
         success: false,
         message: result.message || "Failed to update property",
@@ -71,7 +71,7 @@ export async function updateProperty(
   }
 }
 
-export async function updateRentalRequestStatus(
+export async function updateRentalRequestStatusAction(
   requestId: string,
   status: "APPROVED" | "REJECTED"
 ): Promise<ActionState> {
@@ -103,10 +103,10 @@ export async function updateRentalRequestStatus(
 
     const result = await res.json();
 
-    if (!res.ok) {
+       if (!result.success) {  
       return {
         success: false,
-        message: result.message || "Failed to update request",
+        message: result.message || "Failed to update request status",
       };
     }
 
@@ -124,7 +124,7 @@ export async function updateRentalRequestStatus(
   }
 }
 
-export async function deleteProperty(
+export async function deletePropertyAction(
   propertyId: string
 ): Promise<ActionState> {
   try {
@@ -151,7 +151,7 @@ export async function deleteProperty(
 
     const result = await res.json();
 
-    if (!res.ok) {
+       if (!result.success) {  
       return {
         success: false,
         message: result.message || "Failed to delete property",
@@ -174,7 +174,7 @@ export async function deleteProperty(
 
 
 
-export const getPropertyById = async (id: string) => {
+export const getPropertyByIdAction = async (id: string) => {
   try {
     // const accessToken = await isAccessTokenExist();
     const cookieStore = await cookies();
@@ -213,3 +213,63 @@ export const getPropertyById = async (id: string) => {
     };
   }
 };
+
+
+
+export const getLandlordPropertiesAction = async () => {
+  try {
+    const cookieStore = await cookies();
+    const accessToken = cookieStore.get("accessToken")?.value;
+
+    if (!accessToken) {
+      return { success: false, message: "Unauthorized", data: [], meta: null };
+    }
+
+    const res = await fetch(`${process.env.BACKEND_API_URL}/api/properties`, {
+      headers: { Cookie: `accessToken=${accessToken}` },
+      cache: "no-store",
+    });
+
+    const result = await res.json();
+
+    if (!result.success) {
+      return {
+        success: false,
+        message: result.message || "Failed to fetch properties",
+        data: [],
+        meta: null,
+      };
+    }
+
+    return {
+      success: true,
+      data: result.data.data,   // 👈 double-nested response, actual array এখানে
+      meta: result.data.meta,   // 👈 pagination info
+    };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Something went wrong", data: [], meta: null };
+  }
+};
+
+// export const getLandlordPropertiesAction = async () => {
+//   try {
+//     // const accessToken = await isAccessTokenExist();
+//     const cookieStore = await cookies();
+//     const accessToken = cookieStore.get("accessToken")?.value;
+
+//     if (!accessToken) {
+//       return { success: false, message: "Unauthorized", data: [] };
+//     }
+
+//     const res = await fetch(`${process.env.BACKEND_API_URL}/api/properties`, {
+//       headers: { Cookie: `accessToken=${accessToken}` },
+//       cache: "no-store",
+//     });
+
+//     return await res.json();
+//   } catch (error) {
+//     console.error(error);
+//     return { success: false, message: "Something went wrong", data: [] };
+//   }
+// };
