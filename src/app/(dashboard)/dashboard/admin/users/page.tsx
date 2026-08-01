@@ -1,8 +1,16 @@
 import { getAdminUsersAction } from "../_actions/adminUserAction";
 import { UserManagementTable } from "../_components/UserManegmentTable";
+import PropertyPagination from "@/components/shared/PropertyPagination";
 
-export default async function AdminUsersPage() {
-  const result = await getAdminUsersAction();
+type Props = {
+  searchParams: Promise<{ page?: string }>;
+};
+
+export default async function AdminUsersPage({ searchParams }: Props) {
+  const params = await searchParams;
+  const page = Number(params.page) || 1;
+
+  const result = await getAdminUsersAction(page);
 
   return (
     <div className="space-y-6">
@@ -20,7 +28,14 @@ export default async function AdminUsersPage() {
           <p className="text-muted-foreground">No users found</p>
         </div>
       ) : (
-        <UserManagementTable users={result.data} />
+        <>
+          <UserManagementTable users={result.data} />
+          <PropertyPagination
+            currentPage={result.meta.page}
+            totalPages={result.meta.totalPages}
+            baseUrl="/dashboard/admin/users"
+          />
+        </>
       )}
     </div>
   );

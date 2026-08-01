@@ -6,7 +6,7 @@ import {
   LayoutDashboard,
   Home,
   Users,
-  FileText,
+  ListChecks,
   Settings,
   HelpCircle,
 } from "lucide-react";
@@ -23,20 +23,18 @@ import {
 const menuItems = {
   TENANT: [
     { title: "Dashboard", icon: LayoutDashboard, href: "/dashboard/tenant" },
-    { title: "My Properties", icon: Home, href: "/dashboard/properties" },
-    { title: "Applications", icon: FileText, href: "/dashboard/applications" },
+    { title: "Browse Properties", icon: Home, href: "/properties" },
   ],
   LANDLORD: [
     { title: "Dashboard", icon: LayoutDashboard, href: "/dashboard/landlord" },
-    { title: "My Properties", icon: Home, href: "/dashboard/properties" },
-    { title: "Tenant Requests", icon: Users, href: "/dashboard/requests" },
-    { title: "Applications", icon: FileText, href: "/dashboard/applications" },
+    { title: "My Properties", icon: Home, href: "/dashboard/landlord/properties" },
+    { title: "Tenant Requests", icon: ListChecks, href: "/dashboard/landlord/requests" },
   ],
   ADMIN: [
     { title: "Dashboard", icon: LayoutDashboard, href: "/dashboard/admin" },
     { title: "Users", icon: Users, href: "/dashboard/admin/users" },
     { title: "Properties", icon: Home, href: "/dashboard/admin/properties" },
-    { title: "Reports", icon: FileText, href: "/dashboard/admin/reports" },
+    { title: "Rental Requests", icon: ListChecks, href: "/dashboard/admin/rental-requests" },
   ],
 };
 
