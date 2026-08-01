@@ -27,8 +27,9 @@ const menuItems = {
   ],
   LANDLORD: [
     { title: "Dashboard", icon: LayoutDashboard, href: "/dashboard/landlord" },
+    { title: "Add Property", icon: LayoutDashboard, href: "/dashboard/landlord/properties/new" },
     { title: "My Properties", icon: Home, href: "/dashboard/landlord/properties" },
-    { title: "Tenant Requests", icon: ListChecks, href: "/dashboard/landlord/requests" },
+    { title: "Tenant Requests", icon: ListChecks, href: "/dashboard/landlord/rental-requests" },
   ],
   ADMIN: [
     { title: "Dashboard", icon: LayoutDashboard, href: "/dashboard/admin" },
