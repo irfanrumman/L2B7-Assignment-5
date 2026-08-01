@@ -155,6 +155,11 @@ export interface CreatePropertyPayload {
   image: string;
 }
 
+export interface CreatePropertyActionState {
+  success: boolean;
+  message: string;
+}
+
 
 export interface TenantRef {
   id: string;
@@ -280,4 +285,76 @@ export interface PaymentsApiResponse {
     data: PaymentListItem[];
     meta: PaginationMeta;
   };
+}
+
+
+export interface LandlordPaymentRef {
+  id: string;
+  name: string;
+  phone: string | null;
+  email: string;
+}
+
+export interface PropertyWithLandlord {
+  id: string;
+  title: string;
+  location: string;
+  price: number;
+  isAvailable: boolean;
+  landlord: LandlordPaymentRef;
+}
+
+// GET /api/rentals/:id (single detail) endpoint er shape
+export interface RentalRequestDetail {
+  id: string;
+  tenantId: string;
+  propertyId: string;
+  status: RentalRequestStatus;
+  moveInDate: string;
+  moveOutDate: string;
+  message: string;
+  createdAt: string;
+  updatedAt: string;
+  property: PropertyWithLandlord;
+  payment: PaymentListItem[];
+  review: Review | null;
+}
+
+export interface RentalRequestDetailApiResponse {
+  success: boolean;
+  statusCode: number;
+  message: string;
+  data: RentalRequestDetail;
+}
+
+// POST /api/payments/create endpoint er shape
+export interface CreatePaymentResponseData {
+  checkoutUrl: string;
+  sessionId: string;
+  payment: {
+    id: string;
+    rentalRequestId: string;
+    transactionId: string;
+    amount: number;
+    method: PaymentMethod;
+    provider: PaymentProvider;
+    status: PaymentStatus;
+    paidAt: string | null;
+    createdAt: string;
+    updatedAt: string;
+  };
+}
+
+
+export interface ConfirmPaymentResponseData {
+  id: string;
+  rentalRequestId: string;
+  transactionId: string;
+  amount: number;
+  method: PaymentMethod;
+  provider: PaymentProvider;
+  status: PaymentStatus;
+  paidAt: string | null;
+  createdAt: string;
+  updatedAt: string;
 }

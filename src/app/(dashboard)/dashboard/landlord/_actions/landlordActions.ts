@@ -3,19 +3,17 @@
 import { revalidatePath } from "next/cache";
 import { getMe } from "@/service/getMe";
 import { cookies } from "next/headers";
-// import { isAccessTokenExist } from "@/service/refreshToken";
 
 type PropertyState = {
   success: boolean;
   message: string;
 };
 
-export async function createProperty(
+export const createPropertyAction = async (
   prevState: PropertyState,
   formData: FormData
-): Promise<PropertyState> {
+) => {
   try {
-    // Logged in user
     const result = await getMe();
 
     if (!result.success) {
@@ -25,7 +23,6 @@ export async function createProperty(
       };
     }
 
-    // Role check
     if (result.data.user.role !== "LANDLORD") {
       return {
         success: false,
@@ -33,9 +30,6 @@ export async function createProperty(
       };
     }
 
-    // const accessToken = await isAccessTokenExist();
-    
-    //for now,
     const cookieStore = await cookies();
     const accessToken = cookieStore.get("accessToken")?.value || null;
 
@@ -47,14 +41,14 @@ export async function createProperty(
     }
 
     const payload = {
-  title: formData.get("title"),
-  description: formData.get("description"),
-  location: formData.get("location"),
-  price: Number(formData.get("price")),
-  categoryId: formData.get("categoryId"),
-  image: formData.get("image"),
-  isAvailable: formData.get("isAvailable") === "on",
-};
+      title: formData.get("title"),
+      description: formData.get("description"),
+      location: formData.get("location"),
+      price: Number(formData.get("price")),
+      categoryId: formData.get("categoryId"),
+      image: formData.get("image"),
+     
+    };
 
     const res = await fetch(
       `${process.env.BACKEND_API_URL}/api/landlord/properties`,
@@ -91,4 +85,4 @@ export async function createProperty(
       message: "Something went wrong.",
     };
   }
-}
+};

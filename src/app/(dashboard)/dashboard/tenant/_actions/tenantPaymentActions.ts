@@ -1,0 +1,69 @@
+"use server";
+
+import { cookies } from "next/headers";
+import { RentalRequestDetail } from "@/lib/types";
+
+const getAuthHeader = async () => {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get("accessToken")?.value;
+  return accessToken ? { Cookie: `accessToken=${accessToken}` } : null;
+};
+
+type GetRentalDetailResult =
+  | { success: true; data: RentalRequestDetail }
+  | { success: false; message: string; data: null };
+
+  
+
+export const getRentalRequestDetailAction = async (
+  requestId: string
+): Promise<GetRentalDetailResult> => {
+  try {
+    const headers = await getAuthHeader();
+    if (!headers) {
+      return { success: false, message: "Unauthorized", data: null };
+    }
+
+    const res = await fetch(`${process.env.BACKEND_API_URL}/api/rentals/${requestId}`, {
+      headers,
+      cache: "no-store",
+    });
+
+    const result = await res.json();
+
+    if (!result.success) {
+      return { success: false, message: result.message || "Failed to fetch request", data: null };
+    }
+
+    return { success: true, data: result.data };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Something went wrong", data: null };
+  }
+};
+
+export const createPaymentAction = async (rentalRequestId: string) => {
+  try {
+    const headers = await getAuthHeader();
+    if (!headers) {
+      return { success: false, message: "Unauthorized" };
+    }
+
+    const res = await fetch(`${process.env.BACKEND_API_URL}/api/payments/create`, {
+      method: "POST",
+      headers: { ...headers, "Content-Type": "application/json" },
+      body: JSON.stringify({ rentalRequestId, provider: "STRIPE" }),
+    });
+
+    const result = await res.json();
+
+    if (!result.success) {
+      return { success: false, message: result.message || "Failed to create payment session" };
+    }
+
+    return { success: true, checkoutUrl: result.data.checkoutUrl as string };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Something went wrong" };
+  }
+};

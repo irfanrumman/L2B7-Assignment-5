@@ -3,7 +3,7 @@
 import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
 
-import { createProperty } from "../_actions/landlordActions";
+import { createPropertyAction } from "../_actions/landlordActions";
 import CategorySelect from "./CategorySelect";
 
 import { Button } from "@/components/ui/button";
@@ -17,17 +17,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { CategoryRef, CreatePropertyActionState } from "@/lib/types"; 
 
-interface Category {
-  id: string;
-  name: string;
-}
+
 
 interface Props {
-  categories: Category[];
+  categories: CategoryRef[]; 
 }
 
-const initialState = {
+const initialState: CreatePropertyActionState = {
   success: false,
   message: "",
 };
@@ -37,7 +35,7 @@ const inputClass =
 
 export default function CreatePropertyForm({ categories }: Props) {
   const [state, formAction, pending] = useActionState(
-    createProperty,
+    createPropertyAction,
     initialState
   );
 
@@ -54,10 +52,7 @@ export default function CreatePropertyForm({ categories }: Props) {
   return (
     <Card className="mx-auto w-full max-w-7xl rounded-2xl border shadow-xl">
       <CardHeader className="border-b pb-8">
-        <CardTitle className="text-3xl font-bold">
-          Create New Property
-        </CardTitle>
-
+        <CardTitle className="text-3xl font-bold">Create New Property</CardTitle>
         <CardDescription className="text-base">
           Fill in the information below to publish your property for rent.
         </CardDescription>
@@ -65,15 +60,11 @@ export default function CreatePropertyForm({ categories }: Props) {
 
       <CardContent className="p-6 md:p-10 lg:p-12">
         <form action={formAction} className="space-y-10">
-          {/* Property Information */}
           <section className="space-y-8">
-            <h3 className="text-xl font-semibold">
-              Property Information
-            </h3>
+            <h3 className="text-xl font-semibold">Property Information</h3>
 
             <div className="space-y-2">
               <Label htmlFor="title">Property Title</Label>
-
               <Input
                 id="title"
                 name="title"
@@ -86,13 +77,11 @@ export default function CreatePropertyForm({ categories }: Props) {
             <div className="grid gap-8 lg:grid-cols-2">
               <div className="space-y-2">
                 <Label>Category</Label>
-
                 <CategorySelect categories={categories} />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="price">Monthly Rent</Label>
-
                 <Input
                   id="price"
                   name="price"
@@ -107,15 +96,11 @@ export default function CreatePropertyForm({ categories }: Props) {
 
           <hr />
 
-          {/* Location */}
           <section className="space-y-8">
-            <h3 className="text-xl font-semibold">
-              Property Location
-            </h3>
+            <h3 className="text-xl font-semibold">Property Location</h3>
 
             <div className="space-y-2">
               <Label htmlFor="location">Location</Label>
-
               <Input
                 id="location"
                 name="location"
@@ -126,33 +111,25 @@ export default function CreatePropertyForm({ categories }: Props) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="image">
-                Property Image URL
-              </Label>
-
+              <Label htmlFor="image">Property Image URL</Label>
               <Input
                 id="image"
                 name="image"
                 type="url"
                 placeholder="https://example.com/property.jpg"
                 className={inputClass}
+                required
               />
             </div>
           </section>
 
           <hr />
 
-          {/* Description */}
           <section className="space-y-8">
-            <h3 className="text-xl font-semibold">
-              Property Description
-            </h3>
+            <h3 className="text-xl font-semibold">Property Description</h3>
 
             <div className="space-y-2">
-              <Label htmlFor="description">
-                Description
-              </Label>
-
+              <Label htmlFor="description">Description</Label>
               <Textarea
                 id="description"
                 name="description"
@@ -164,14 +141,8 @@ export default function CreatePropertyForm({ categories }: Props) {
             </div>
           </section>
 
-          {/* Submit */}
           <div className="flex justify-end pt-4">
-            <Button
-              type="submit"
-              size="lg"
-              disabled={pending}
-              className="h-12 w-full md:w-64"
-            >
+            <Button type="submit" size="lg" disabled={pending} className="h-12 w-full md:w-64">
               {pending ? "Creating..." : "Create Property"}
             </Button>
           </div>
