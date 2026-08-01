@@ -20,7 +20,9 @@ export interface Property {
 export interface CategoryRef {
   id: string;
   name: string;
-  description: string;
+  description?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface LandlordRef {
@@ -60,7 +62,7 @@ export interface PaginationMeta {
   totalPages: number;
 }
 
-// GET /api/properties এর pura response shape (double-nested data)
+
 export interface PropertiesApiResponse {
   success: boolean;
   statusCode: number;

@@ -26,9 +26,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const navItems = [
+  { label: "Home", href: "/" },
   { label: "Properties", href: "/properties" },
-  { label: "How It Works", href: "/" },
-  { label: "Contact", href: "/contact" },
 ];
 
 export function Navbar() {
@@ -105,10 +104,10 @@ export function Navbar() {
                     <LayoutDashboard className="w-4 h-4 mr-2" />
                     <span>Dashboard</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  {/* <DropdownMenuItem>
                     <Settings className="w-4 h-4 mr-2" />
                     <span>Settings</span>
-                  </DropdownMenuItem>
+                  </DropdownMenuItem> */}
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleLogout}>
                     <LogOut className="w-4 h-4 mr-2" />
