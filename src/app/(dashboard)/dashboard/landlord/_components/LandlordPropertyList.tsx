@@ -78,7 +78,7 @@ export function LandlordPropertyList({ properties }: Props) {
 
           {/* Right side — actions */}
           <div className="flex flex-wrap gap-2 shrink-0">
-            <Link href={`/dashboard/landlord/properties/${property.id}/edit`}>
+            <Link href={`/dashboard/landlord/properties/${property.id}`}>
               <Button variant="secondary" size="sm" disabled={isPending}>
                 Edit
               </Button>
