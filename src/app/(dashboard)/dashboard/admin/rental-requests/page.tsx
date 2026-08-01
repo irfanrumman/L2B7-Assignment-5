@@ -1,9 +1,42 @@
-import React from 'react'
+import { getAdminRentalsAction } from "../_actions/adminRentalActions";
+import { AdminRentalTable } from "../_components/AdminRentalTable";
+import PropertyPagination from "@/components/shared/PropertyPagination";
 
-const RentalReqPage = () => {
+type Props = {
+  searchParams: Promise<{ page?: string }>;
+};
+
+export default async function AdminRentalRequestsPage({ searchParams }: Props) {
+  const params = await searchParams;
+  const page = Number(params.page) || 1;
+
+  const result = await getAdminRentalsAction(page);
+
   return (
-    <div>RentalReqPage</div>
-  )
-}
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold text-foreground">Rental Requests</h1>
+        <p className="text-muted-foreground">
+          Monitor all rental requests and payments across the platform.
+        </p>
+      </div>
 
-export default RentalReqPage
+      {!result.success ? (
+        <p className="text-destructive">{result.message}</p>
+      ) : result.data.length === 0 ? (
+        <div className="rounded-lg border border-dashed border-border p-12 text-center">
+          <p className="text-muted-foreground">No rental requests found</p>
+        </div>
+      ) : (
+        <>
+          <AdminRentalTable requests={result.data} />
+          <PropertyPagination
+            currentPage={result.meta.page}
+            totalPages={result.meta.totalPages}
+            baseUrl="/dashboard/admin/rental-requests"
+          />
+        </>
+      )}
+    </div>
+  );
+}

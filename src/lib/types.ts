@@ -378,3 +378,121 @@ export interface AdminUsersApiResponse {
     data: AdminUserListItem[];
   };
 }
+
+export interface TenantRef {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+}
+
+export interface LandlordBriefRef {
+  id: string;
+  name: string;
+  email: string;
+}
+
+export interface PropertyWithLandlordBrief {
+  id: string;
+  title: string;
+  location: string;
+  landlord: LandlordBriefRef;
+}
+
+export interface AdminPaymentRef {
+  id: string;
+  rentalRequestId: string;
+  transactionId: string;
+  amount: number;
+  method: PaymentMethod;
+  provider: PaymentProvider;
+  status: PaymentStatus;
+  paidAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+
+export interface AdminRentalRequestItem {
+  id: string;
+  tenantId: string;
+  propertyId: string;
+  status: RentalRequestStatus;
+  moveInDate: string;
+  moveOutDate: string;
+  message: string;
+  createdAt: string;
+  updatedAt: string;
+  tenant: TenantRef;
+  property: PropertyWithLandlordBrief;
+  payment: AdminPaymentRef[];
+}
+
+export interface AdminRentalsApiResponse {
+  success: boolean;
+  statusCode: number;
+  message: string;
+  data: {
+    meta: PaginationMeta;
+    data: AdminRentalRequestItem[];
+  };
+}
+
+
+export interface TenantRef {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+}
+
+export interface LandlordBriefRef {
+  id: string;
+  name: string;
+  email: string;
+}
+
+export interface PropertyWithLandlordBrief {
+  id: string;
+  title: string;
+  location: string;
+  landlord: LandlordBriefRef;
+}
+
+export interface AdminPaymentRef {
+  id: string;
+  rentalRequestId: string;
+  transactionId: string;
+  amount: number;
+  method: PaymentMethod;
+  provider: PaymentProvider;
+  status: PaymentStatus;
+  paidAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AdminRentalRequestItem {
+  id: string;
+  tenantId: string;
+  propertyId: string;
+  status: RentalRequestStatus;
+  moveInDate: string;
+  moveOutDate: string;
+  message: string;
+  createdAt: string;
+  updatedAt: string;
+  tenant: TenantRef;
+  property: PropertyWithLandlordBrief;
+  payment: AdminPaymentRef[];
+}
+
+export interface AdminRentalsApiResponse {
+  success: boolean;
+  statusCode: number;
+  message: string;
+  data: {
+    meta: PaginationMeta;
+    data: AdminRentalRequestItem[];
+  };
+}
