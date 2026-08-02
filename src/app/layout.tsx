@@ -151,7 +151,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="bg-background">
       <body className="antialiased">
-         <Toaster position="top-right" richColors />
+         <Toaster position="top-center" richColors />
         <TooltipProvider>
           <ThemeProvider>
             <AuthProvider>
