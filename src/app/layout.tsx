@@ -109,7 +109,7 @@ import { ThemeProvider } from "@/lib/theme-context";
 import { Navbar } from "@/components/shared/navbar";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "sonner";
-import { Footer } from "@/components/shared/Footer";
+import { Footer } from "@/components/shared/SharedFooter";
 
 export const metadata: Metadata = {
   title: "RentNest - Find Your Perfect Home",
