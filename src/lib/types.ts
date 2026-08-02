@@ -213,11 +213,12 @@ export interface PropertyRentalRef {
   title: string;
   location: string;
   price: number;
+  image: string | null;
   isAvailable: boolean;
   landlord: LandlordRentalRef;
 }
 
-// GET /api/rentals (tenant er nijer request history) endpoint er shape
+
 export interface TenantRentalRequest {
   id: string;
   tenantId: string;
@@ -264,7 +265,7 @@ export interface RentalRequestPaymentRef {
   property: PropertyPaymentRef;
 }
 
-// GET /api/payments endpoint er shape
+
 export interface PaymentListItem {
   id: string;
   rentalRequestId: string;
@@ -329,7 +330,7 @@ export interface RentalRequestDetailApiResponse {
   data: RentalRequestDetail;
 }
 
-// POST /api/payments/create endpoint er shape
+
 export interface CreatePaymentResponseData {
   checkoutUrl: string;
   sessionId: string;
@@ -497,4 +498,52 @@ export interface AdminRentalsApiResponse {
     meta: PaginationMeta;
     data: AdminRentalRequestItem[];
   };
+}
+
+
+export interface LandlordFullRef {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  role: "LANDLORD";
+}
+
+export interface CategoryFullRef {
+  id: string;
+  name: string;
+  description: string;
+}
+
+export interface PropertyDetail extends Property {
+  landlord: LandlordFullRef;
+  category: CategoryFullRef;
+  reviews: Review[];
+}
+
+export interface CreateRentalRequestPayload {
+  propertyId: string;
+  moveInDate: string;
+  moveOutDate: string;
+  message: string;
+}
+
+export interface CreateRentalRequestResponseData {
+  id: string;
+  tenantId: string;
+  propertyId: string;
+  status: RentalRequestStatus;
+  moveInDate: string;
+  moveOutDate: string;
+  message: string;
+  createdAt: string;
+  updatedAt: string;
+  property: {
+    id: string;
+    title: string;
+    location: string;
+    price: number;
+    image: string | null;
+  };
+  tenant: TenantRef;
 }

@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { CategoryRef } from "@/lib/types";
-import {PropertySearchBox} from "@/components/shared/PropertySearchBox";
+import { PropertySearchBox } from "@/components/shared/PropertySearchBox";
 
 interface Props {
   categories: CategoryRef[];
@@ -15,7 +15,7 @@ interface Props {
   };
 }
 
-export default function AdminPropertyFilters({ categories, defaultValues }: Props) {
+export default function PropertyFiltersForm({ categories, defaultValues }: Props) {
   return (
     <div className="mb-8 space-y-4">
       <PropertySearchBox defaultValue={defaultValues.search} />

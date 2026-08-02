@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { getPropertiesAction, getCategoriesAction } from "../_actions/adminPropertyActions";
 import { AdminPropertyCard } from "../_components/AdminPropertyCard";
-import AdminPropertyFilters from "../_components/AdminPropertyFilters";
+import  PropertyFiltersForm  from "@/components/shared/PropertyFiltersForm";
 import PropertyPagination from "@/components/shared/PropertyPagination";
 
 type Props = {
@@ -44,7 +44,7 @@ export default async function AdminPropertiesPage({ searchParams }: Props) {
       </div>
 
       <Suspense fallback={<div className="h-16" />}>
-        <AdminPropertyFilters
+        <PropertyFiltersForm
           categories={categories}
           defaultValues={{
             search: params.search,
