@@ -1,20 +1,28 @@
 import Link from "next/link";
 import RegisterForm from "../_components/RegisterForm";
 import { Suspense } from "react";
+import { Card } from "@/components/ui/card";
 
 export default function RegisterPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4 py-12">
-      <div className="w-full max-w-md rounded-lg border border-border bg-card p-8 shadow-sm">
+    <Card className="flex min-h-screen items-center justify-center bg-background px-4 py-8 sm:py-12">
+      <div className="w-full max-w-md rounded-lg border border-border bg-card p-5 shadow-sm sm:p-8">
         {/* Header */}
-        <div className="mb-8 flex flex-col gap-2">
-          <h1 className="text-3xl font-bold text-foreground">Create Account</h1>
-          <p className="text-muted-foreground">Join RentNest and find your perfect home</p>
+        {/* className="mb-6 flex flex-col gap-2 sm:mb-8" */}
+        <div className="mb-6 flex flex-col gap-2 sm:mb-8">
+          {/* className="font-[family-name:var(--font-display)] text-3xl font-semibold text-[var(--ink)]" */}
+          {/* className="text-2xl font-bold text-foreground sm:text-3xl" */}
+          <h1 className="font-(family-name:--font-display) text-3xl font-semibold text-(--ink)">Create Account</h1>
+
+          {/* className="text-sm text-muted-foreground sm:text-base" */}
+          <p className="mt-2 text-sm text-muted-foreground sm:text-base">
+            Join RentNest as a tenant or landlord.
+          </p>
         </div>
 
-          <Suspense fallback={<div>Loading...</div>}>
-      <RegisterForm />
-    </Suspense>
+        <Suspense fallback={<div className="text-center text-muted-foreground">Loading...</div>}>
+          <RegisterForm />
+        </Suspense>
 
         {/* Sign In Link */}
         <p className="mt-6 text-center text-sm text-muted-foreground">
@@ -24,6 +32,6 @@ export default function RegisterPage() {
           </Link>
         </p>
       </div>
-    </div>
+    </Card>
   );
 }
