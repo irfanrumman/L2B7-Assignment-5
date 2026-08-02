@@ -1,9 +1,8 @@
 import { Suspense } from "react";
-import { getPropertiesAction, getCategoriesAction } from "./_actions/propertyActions";
-import { PropertyGrid } from "@/components/shared/PropertyGrid";
+import { getCategoriesAction } from "./_actions/propertyActions";
+import { PropertyCardSkeleton } from "@/components/shared/PropertyCardSkeleton";
 import PropertyFiltersForm from "@/components/shared/PropertyFiltersForm";
-import PropertyHeader from "./_components/PropertyHeader";
-import PropertyPagination from "@/components/shared/PropertyPagination";
+import { PropertiesList } from "./_components/Propertieslist";
 
 type Props = {
   searchParams: Promise<{
@@ -17,61 +16,55 @@ type Props = {
   }>;
 };
 
+function PropertiesGridSkeleton() {
+  return (
+    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {Array.from({ length: 8 }).map((_, i) => (
+        <PropertyCardSkeleton key={i} />
+      ))}
+    </div>
+  );
+}
+
 export default async function PropertiesPage({ searchParams }: Props) {
   const params = await searchParams;
   const page = Number(params.page) || 1;
 
-  const [result, categories] = await Promise.all([
-    getPropertiesAction({
-      page: String(page),
-      limit: "9",
-      search: params.search,
-      location: params.location,
-      categoryId: params.categoryId,
-      minPrice: params.minPrice,
-      maxPrice: params.maxPrice,
-      isAvailable: params.isAvailable,
-    }),
-    getCategoriesAction(),
-  ]);
+  const categories = await getCategoriesAction();
 
   return (
     <main className="flex-1">
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 sm:py-12">
-        <PropertyHeader total={result.success ? result.meta.total : 0} />
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-foreground sm:text-4xl">All Properties</h1>
+          <p className="text-base text-muted-foreground sm:text-lg">
+            Find your next home from our curated listings.
+          </p>
+        </div>
 
-        <Suspense fallback={<div className="h-16" />}>
-          <PropertyFiltersForm
-            categories={categories}
-            defaultValues={{
-              search: params.search,
-              location: params.location,
-              categoryId: params.categoryId,
-              minPrice: params.minPrice,
-              maxPrice: params.maxPrice,
-              isAvailable: params.isAvailable,
-            }}
+        <PropertyFiltersForm
+          categories={categories}
+          defaultValues={{
+            search: params.search,
+            location: params.location,
+            categoryId: params.categoryId,
+            minPrice: params.minPrice,
+            maxPrice: params.maxPrice,
+            isAvailable: params.isAvailable,
+          }}
+        />
+
+        <Suspense fallback={<PropertiesGridSkeleton />} key={JSON.stringify(params)}>
+          <PropertiesList
+            page={page}
+            search={params.search}
+            location={params.location}
+            categoryId={params.categoryId}
+            minPrice={params.minPrice}
+            maxPrice={params.maxPrice}
+            isAvailable={params.isAvailable}
           />
         </Suspense>
-
-        {!result.success ? (
-          <h2 className="text-xl font-semibold text-destructive">{result.message}</h2>
-        ) : result.data.length === 0 ? (
-          <div className="rounded-lg border border-dashed border-border p-12 text-center">
-            <p className="text-muted-foreground">No properties found</p>
-          </div>
-        ) : (
-          <>
-            <PropertyGrid properties={result.data} />
-            <Suspense fallback={<div className="h-16" />}>
-              <PropertyPagination
-                currentPage={result.meta.page}
-                totalPages={result.meta.totalPages}
-                baseUrl="/properties"
-              />
-            </Suspense>
-          </>
-        )}
       </div>
     </main>
   );

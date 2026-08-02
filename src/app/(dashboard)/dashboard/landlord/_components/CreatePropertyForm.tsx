@@ -81,7 +81,7 @@ export default function CreatePropertyForm({ categories }: Props) {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="price">Monthly Rent</Label>
+                <Label htmlFor="price">Rent Price</Label>
                 <Input
                   id="price"
                   name="price"

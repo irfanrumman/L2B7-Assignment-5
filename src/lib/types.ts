@@ -492,3 +492,17 @@ export interface CreateReviewPayload {
   rating: number;
   comment: string;
 }
+
+
+export interface CategoryItem {
+  id: string;
+  name: string;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateCategoryPayload {
+  name: string;
+  description: string;
+}

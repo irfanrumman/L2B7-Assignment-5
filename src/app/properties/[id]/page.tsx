@@ -28,7 +28,6 @@ export default async function PropertyDetailPage({ params }: Props) {
 
   const property = result.data;
 
-  // Logged-in tenant hole, age theke request pathano ache kina check kori
   const meResult = await getMe();
   if (meResult.success && meResult.data.user.role === "TENANT") {
     const alreadyRequested = await checkExistingRequestAction(id);
@@ -38,10 +37,10 @@ export default async function PropertyDetailPage({ params }: Props) {
   }
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
-      <div className="grid gap-8 lg:grid-cols-3">
-        <div className="lg:col-span-2 space-y-6">
-          <div className="relative h-80 w-full overflow-hidden rounded-lg bg-muted">
+    <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+      <div className="grid gap-6 lg:grid-cols-3 lg:gap-8">
+        <div className="space-y-4 sm:space-y-6 lg:col-span-2">
+          <div className="relative h-56 w-full overflow-hidden rounded-lg bg-muted sm:h-72 lg:h-80">
             {property.image ? (
               <Image
                 src={property.image}
@@ -64,7 +63,7 @@ export default async function PropertyDetailPage({ params }: Props) {
 
           <div>
             <div className="flex items-center justify-between gap-2 flex-wrap">
-              <h1 className="text-3xl font-bold text-foreground">{property.title}</h1>
+              <h1 className="text-2xl font-bold text-foreground sm:text-3xl">{property.title}</h1>
               <Badge variant="outline" className="capitalize">
                 {property.category.name}
               </Badge>
@@ -75,7 +74,7 @@ export default async function PropertyDetailPage({ params }: Props) {
             </div>
           </div>
 
-          <Card className="p-6 space-y-4">
+          <Card className="p-4 space-y-4 sm:p-6">
             <div>
               <h2 className="font-semibold text-foreground mb-2">Description</h2>
               <p className="text-muted-foreground">{property.description}</p>
@@ -93,8 +92,7 @@ export default async function PropertyDetailPage({ params }: Props) {
             </div>
           </Card>
 
-          {/* Reviews */}
-          <Card className="p-6">
+          <Card className="p-4 sm:p-6">
             <h2 className="font-semibold text-foreground mb-4">
               Reviews ({property.reviews.length})
             </h2>
@@ -126,9 +124,9 @@ export default async function PropertyDetailPage({ params }: Props) {
         </div>
 
         <div className="space-y-4 lg:sticky lg:top-24 lg:self-start">
-          <Card className="p-6">
+          <Card className="p-4 sm:p-6">
             <p className="text-sm text-muted-foreground">Monthly Price</p>
-            <p className="text-3xl font-bold text-primary">
+            <p className="text-2xl font-bold text-primary sm:text-3xl">
               ${property.price.toLocaleString()}
             </p>
             <div className="mt-2">

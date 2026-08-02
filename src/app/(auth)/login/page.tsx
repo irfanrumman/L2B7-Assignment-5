@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { Card } from "@/components/ui/card";
 
 export default function LoginPage() {
+  
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4 py-8 sm:py-12">
       <Card className="w-full max-w-md rounded-lg border border-border bg-card p-5 shadow-sm sm:p-8">

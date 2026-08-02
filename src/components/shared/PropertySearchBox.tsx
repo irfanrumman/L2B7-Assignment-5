@@ -57,7 +57,7 @@ export function PropertySearchBox({ defaultValue }: { defaultValue?: string }) {
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder="Search by title or description... (Press Enter)"
-        className="pl-9 pr-9"
+        className="pl-9 pr-9 w-[60%] border border-border rounded-md h-9 text-sm"
       />
       {isPending && (
         <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 animate-spin text-muted-foreground" />

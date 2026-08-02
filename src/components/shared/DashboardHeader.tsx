@@ -13,6 +13,9 @@ const menuItems = {
   ],
   LANDLORD: [
     { title: "Dashboard", icon: LayoutDashboard, href: "/dashboard/landlord" },
+
+    { title: "Add Property", icon: LayoutDashboard, href: "/dashboard/landlord/properties/new" },
+
     { title: "My Properties", icon: Home, href: "/dashboard/landlord/properties" },
     { title: "Tenant Requests", icon: ListChecks, href: "/dashboard/landlord/rental-requests" },
   ],
@@ -21,6 +24,7 @@ const menuItems = {
     { title: "Users", icon: Users, href: "/dashboard/admin/users" },
     { title: "Properties", icon: Home, href: "/dashboard/admin/properties" },
     { title: "Rental Requests", icon: ListChecks, href: "/dashboard/admin/rental-requests" },
+    { title: "Categories", icon: ListChecks, href: "/dashboard/admin/categories" },
   ],
 };
 

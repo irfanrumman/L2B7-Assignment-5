@@ -1,15 +1,16 @@
-import { getFeaturedPropertiesAction } from "./{public}/_actions/HomePageActions";
 import { HeroSection } from "./{public}/_components/HeroSection";
-import { FeaturedProperties } from "./{public}/_components/FeaturedProperties";
+import { HomePropertiesSection } from "./{public}/_components/HomePropertiesSection";
 import { CTASection } from "./{public}/_components/CTASection";
 
-export default async function HomePage() {
-  const result = await getFeaturedPropertiesAction();
+type Props = {
+  searchParams: Promise<{ location?: string }>;
+};
 
+export default async function HomePage({ searchParams }: Props) {
   return (
     <>
       <HeroSection />
-      <FeaturedProperties properties={result.success ? result.data : []} />
+      <HomePropertiesSection searchParams={searchParams} />
       <CTASection />
     </>
   );

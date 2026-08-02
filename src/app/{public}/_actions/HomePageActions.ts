@@ -2,30 +2,41 @@
 
 import { PropertyListItem } from "@/lib/types";
 
-type GetFeaturedPropertiesResult =
-  | { success: true; data: PropertyListItem[] }
-  | { success: false; message: string; data: [] };
+type GetHomePropertiesResult =
+  | { success: true; data: PropertyListItem[]; isFiltered: boolean }
+  | { success: false; message: string; data: []; isFiltered: boolean };
 
-export const getFeaturedPropertiesAction = async (): Promise<GetFeaturedPropertiesResult> => {
+export const getHomePropertiesAction = async (
+  locationQuery?: string
+): Promise<GetHomePropertiesResult> => {
   try {
-    const res = await fetch(`${process.env.BACKEND_API_URL}/api/properties?limit=100`, {
-      next: { revalidate: 60 },
-    });
+    const params = new URLSearchParams();
+    params.set("limit", "100");
+    if (locationQuery) {
+      params.set("location", locationQuery);
+    }
+
+    const res = await fetch(
+      `${process.env.BACKEND_API_URL}/api/properties?${params.toString()}`,
+      { cache: "no-store" }
+    );
 
     const result = await res.json();
 
     if (!result.success) {
-      return { success: false, message: result.message || "Failed to fetch properties", data: [] };
+      return { success: false, message: result.message || "Failed to fetch properties", data: [], isFiltered: false };
     }
 
     const allProperties: PropertyListItem[] = result.data.data;
 
-    // Backend e featured filter nei, tai frontend e nijei filter korchi
-    const featuredOnly = allProperties.filter((p) => p.featured);
+    if (locationQuery) {
+      return { success: true, data: allProperties, isFiltered: true };
+    }
 
-    return { success: true, data: featuredOnly };
+    const featuredOnly = allProperties.filter((p) => p.featured);
+    return { success: true, data: featuredOnly, isFiltered: false };
   } catch (error) {
     console.error(error);
-    return { success: false, message: "Something went wrong", data: [] };
+    return { success: false, message: "Something went wrong", data: [], isFiltered: false };
   }
 };
