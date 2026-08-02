@@ -77,7 +77,7 @@ export default async function RentalRequestDetailPage({ params }: Props) {
 
         <div className="flex items-center justify-between border-t border-border pt-4">
           <div>
-            <p className="text-sm text-muted-foreground">Monthly Price</p>
+            <p className="text-sm text-muted-foreground"> Price</p>
             <p className="text-2xl font-bold text-primary">
               ${request.property.price.toLocaleString()}
             </p>
@@ -89,13 +89,12 @@ export default async function RentalRequestDetailPage({ params }: Props) {
             </Link>
           )}
 
-          {/* COMPLETED status e, review na thakle "Leave a Review" button dekhabo */}
+          
           {request.status === "COMPLETED" && !request.review && (
             <ReviewDialog rentalRequestId={request.id} />
           )}
         </div>
 
-        {/* Review dekhano — jodi thake (COMPLETED er por) */}
         {request.review && (
           <div className="border-t border-border pt-4">
             <p className="text-sm text-muted-foreground mb-2">Your Review</p>

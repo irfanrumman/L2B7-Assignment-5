@@ -109,6 +109,7 @@ import { ThemeProvider } from "@/lib/theme-context";
 import { Navbar } from "@/components/shared/navbar";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "sonner";
+import { Footer } from "@/components/shared/Footer";
 
 export const metadata: Metadata = {
   title: "RentNest - Find Your Perfect Home",
@@ -157,8 +158,9 @@ export default function RootLayout({
               <div className="flex flex-col min-h-screen">
                 <Navbar />
                 <main className="flex-1">{children}</main>
+                <Footer />
               </div>
-              {/* {process.env.NODE_ENV === 'production' && <Analytics />} */}
+              
             </AuthProvider>
           </ThemeProvider>
         </TooltipProvider>

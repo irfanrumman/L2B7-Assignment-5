@@ -49,7 +49,7 @@ export function Navbar() {
 
  
     if (user.role === "TENANT") {
-      router.push("/dashboard");
+      router.push("/dashboard/tenant");
     } else if (user.role === "LANDLORD") {
       router.push("/dashboard/landlord");
     } else if (user.role === "ADMIN") {
