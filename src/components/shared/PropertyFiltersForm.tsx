@@ -19,13 +19,11 @@ interface Props {
 export default function PropertyFiltersForm({ categories, defaultValues }: Props) {
   return (
     <div className="mb-8 space-y-4">
-      {/* Real-time filters — reload chara e URL update hoy */}
       <div className="grid gap-3 sm:grid-cols-2">
         <PropertySearchBox defaultValue={defaultValues.search} />
         <CategorySelect categories={categories} defaultValue={defaultValues.categoryId} />
       </div>
 
-      {/* Baki filters — "Apply Filters" button diye submit hoy */}
       <form
         method="GET"
         className="rounded-lg border bg-card p-4 flex flex-col gap-4 sm:flex-row sm:items-end sm:flex-wrap"
@@ -35,17 +33,17 @@ export default function PropertyFiltersForm({ categories, defaultValues }: Props
 
         <div className="flex-1 min-w-35">
           <label className="mb-2 block text-sm font-medium">Location</label>
-          <Input name="location" placeholder="Dhaka, ..." defaultValue={defaultValues.location} className="border border-border rounded-md h-9 text-sm w-[55%]" />
+          <Input name="location" placeholder="Dhaka, ..." className="border border-border w-[60%]" defaultValue={defaultValues.location} />
         </div>
 
         <div className="w-full sm:w-32">
           <label className="mb-2 block text-sm font-medium">Min Price</label>
-          <Input name="minPrice" type="number" placeholder="0" defaultValue={defaultValues.minPrice} className="border border-border rounded-md h-9 text-sm" />
+          <Input name="minPrice" type="number" placeholder="0" className="border border-border w-full" defaultValue={defaultValues.minPrice} />
         </div>
 
         <div className="w-full sm:w-32">
           <label className="mb-2 block text-sm font-medium">Max Price</label>
-          <Input name="maxPrice" type="number" placeholder="10" defaultValue={defaultValues.maxPrice} className="border border-border rounded-md h-9 text-sm" />
+          <Input name="maxPrice" type="number" className="border border-border w-full" placeholder="100000" defaultValue={defaultValues.maxPrice} />
         </div>
 
         <div className="w-full sm:w-36">

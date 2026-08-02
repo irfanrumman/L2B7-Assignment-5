@@ -14,19 +14,24 @@ type GetAdminUsersResult =
   | { success: true; data: AdminUserListItem[]; meta: PaginationMeta }
   | { success: false; message: string; data: []; meta: null };
 
-export const getAdminUsersAction = async (page: number = 1): Promise<GetAdminUsersResult> => {
+export const getAdminUsersAction = async (
+  page: number = 1,
+  search?: string
+): Promise<GetAdminUsersResult> => {
   try {
     const headers = await getAuthHeader();
     if (!headers) {
       return { success: false, message: "Unauthorized", data: [], meta: null };
     }
 
+    const params = new URLSearchParams();
+    params.set("page", String(page));
+    params.set("limit", "10");
+    if (search) params.set("search", search);
+
     const res = await fetch(
-      `${process.env.BACKEND_API_URL}/api/admin/users?page=${page}&limit=10`,
-      {
-        headers,
-        cache: "no-store",
-      }
+      `${process.env.BACKEND_API_URL}/api/admin/users?${params.toString()}`,
+      { headers, cache: "no-store" }
     );
 
     const result = await res.json();

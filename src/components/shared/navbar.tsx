@@ -36,8 +36,6 @@ export function Navbar() {
   const { theme, toggleTheme } = useTheme();
   const router = useRouter();
 
-  console.log("Navbar user:", user);
-
   const handleLogout = () => {
     logout();
     router.push("/");

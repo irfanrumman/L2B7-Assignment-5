@@ -58,14 +58,16 @@ export default async function AdminPropertyDetailPage({ params }: Props) {
   const property = result.data;
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
+    <div className="max-w-3xl mx-auto space-y-4 sm:space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-foreground">Property Details</h1>
-        <p className="text-muted-foreground">Review property information and manage featured status.</p>
+        <h1 className="text-xl font-bold text-foreground sm:text-2xl">Property Details</h1>
+        <p className="text-sm text-muted-foreground sm:text-base">
+          Review property information and manage featured status.
+        </p>
       </div>
 
       <Card className="overflow-hidden">
-        <div className="relative h-64 w-full bg-muted">
+        <div className="relative h-48 w-full bg-muted sm:h-64">
           {property.image ? (
             <Image src={property.image} alt={property.title} fill unoptimized className="object-cover" />
           ) : (
@@ -75,10 +77,10 @@ export default async function AdminPropertyDetailPage({ params }: Props) {
           )}
         </div>
 
-        <div className="p-6 space-y-6">
+        <div className="p-4 space-y-4 sm:p-6 sm:space-y-6">
           <div>
             <div className="flex items-center justify-between gap-2 flex-wrap">
-              <h2 className="text-xl font-bold text-foreground">{property.title}</h2>
+              <h2 className="text-lg font-bold text-foreground sm:text-xl">{property.title}</h2>
               <Badge variant="outline" className="capitalize">
                 {property.category.name}
               </Badge>
@@ -154,10 +156,11 @@ export default async function AdminPropertyDetailPage({ params }: Props) {
           {/* Rental requests / tenants */}
           <PropertyRentalRequests requests={rentalRequests} />
 
-          <div className="flex items-center justify-between border-t border-border pt-4">
+          {/* Price + Featured toggle — mobile e stack, sm+ e pashapashi */}
+          <div className="flex flex-col gap-3 border-t border-border pt-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-sm text-muted-foreground">Monthly Price</p>
-              <p className="text-2xl font-bold text-primary">
+              <p className="text-xl font-bold text-primary sm:text-2xl">
                 ${property.price.toLocaleString()}
               </p>
             </div>

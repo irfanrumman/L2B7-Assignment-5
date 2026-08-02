@@ -40,9 +40,9 @@ export function AdminPropertyCard({
   };
 
   return (
-    <Card className="group flex flex-row overflow-hidden transition-all hover:shadow-md hover:border-primary/50 py-0 gap-0">
-      {/* Left — Boro image, pura height jure */}
-      <div className="relative w-56 shrink-0 overflow-hidden bg-muted hidden sm:block">
+    <Card className="group flex flex-col overflow-hidden transition-all hover:shadow-md hover:border-primary/50 py-0 gap-0 sm:flex-row">
+      {/* Image — mobile e full-width upore, sm+ e left side e fixed width */}
+      <div className="relative h-40 w-full shrink-0 overflow-hidden bg-muted sm:h-auto sm:w-56">
         {image ? (
           <Image src={image} alt={title} fill unoptimized className="object-cover" />
         ) : (
@@ -51,21 +51,11 @@ export function AdminPropertyCard({
           </div>
         )}
       </div>
-      {/* Mobile e chotto image */}
-      <div className="relative w-24 shrink-0 overflow-hidden bg-muted sm:hidden">
-        {image ? (
-          <Image src={image} alt={title} fill unoptimized className="object-cover" />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center text-muted-foreground">
-            <ImageOff className="h-5 w-5" />
-          </div>
-        )}
-      </div>
 
       {/* Middle — Title, category, location, description snippet, landlord */}
       <div className="flex-1 min-w-0 p-4 sm:p-5">
         <div className="flex items-center gap-2 flex-wrap">
-          <h4 className="text-lg font-bold text-primary">{title}</h4>
+          <h4 className="text-base font-bold text-primary sm:text-lg">{title}</h4>
           <Badge variant="outline" className="capitalize text-xs">
             {category.name}
           </Badge>
@@ -76,7 +66,6 @@ export function AdminPropertyCard({
           <span>{location}</span>
         </div>
 
-        {/* Songkhipto description — 1 line pordoyonto, baki view e click korle */}
         <p className="text-sm text-muted-foreground mt-2 line-clamp-1">
           {description}
         </p>
@@ -95,10 +84,10 @@ export function AdminPropertyCard({
       </div>
 
       {/* Right — Price + actions */}
-      <div className="flex w-44 shrink-0 flex-col items-end justify-between border-l border-border p-4 sm:p-5">
+      <div className="flex w-full shrink-0 flex-col items-end justify-between gap-3 border-t border-border p-4 sm:w-44 sm:border-t-0 sm:border-l sm:p-5">
         <div className="text-right">
-          <p className="text-xs text-muted-foreground">Monthly Price</p>
-          <p className="text-xl font-bold text-primary">${price.toLocaleString()}</p>
+          <p className="text-xs text-muted-foreground">Price</p>
+          <p className="text-lg font-bold text-primary sm:text-xl">${price.toLocaleString()}</p>
         </div>
 
         <div className="flex flex-col gap-2 w-full">

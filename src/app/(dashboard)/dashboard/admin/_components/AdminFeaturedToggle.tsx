@@ -17,8 +17,12 @@ export function FeaturedToggle({
   const [isPending, startTransition] = useTransition();
 
   const handleToggle = () => {
+   
+
     startTransition(async () => {
+   
       const result = await toggleFeaturedAction(propertyId, featured);
+
       if (result.success) {
         setFeatured(!featured);
         toast.success(result.message || "Property updated");
@@ -30,11 +34,11 @@ export function FeaturedToggle({
 
   return (
     <Button
-      size="lg"
+      size="default"
       variant={featured ? "default" : "outline"}
       disabled={isPending}
       onClick={handleToggle}
-      className="gap-2"
+      className="gap-2 w-full sm:w-auto sm:h-11 sm:px-6 sm:text-base"
     >
       <Star className={`h-4 w-4 ${featured ? "fill-current" : ""}`} />
       {featured ? "Featured" : "Mark as Featured"}

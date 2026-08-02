@@ -30,11 +30,11 @@ export function RentalRequestForm({ propertyId }: { propertyId: string }) {
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="moveInDate">Move-in Date</Label>
-          <Input id="moveInDate" name="moveInDate" type="date" required />
+          <Input id="moveInDate" name="moveInDate" type="date" className="border border-border" required />
         </div>
         <div className="space-y-2">
           <Label htmlFor="moveOutDate">Move-out Date</Label>
-          <Input id="moveOutDate" name="moveOutDate" type="date" required />
+          <Input id="moveOutDate" name="moveOutDate" type="date" className="border border-border"required />
         </div>
       </div>
 
@@ -44,6 +44,7 @@ export function RentalRequestForm({ propertyId }: { propertyId: string }) {
           id="message"
           name="message"
           placeholder="Hi, I'm interested in renting this property..."
+          className="border border-border"
           rows={4}
           required
         />

@@ -49,9 +49,51 @@ export function UserManagementTable({ users }: Props) {
 
   const isBanning = selectedUser?.status === "ACTIVE";
 
+  const ActionButton = ({ user }: { user: AdminUserListItem }) =>
+    user.role !== "ADMIN" ? (
+      <Button
+        size="sm"
+        variant={user.status === "ACTIVE" ? "destructive" : "secondary"}
+        onClick={() => openConfirmDialog(user)}
+      >
+        {user.status === "ACTIVE" ? "Ban" : "Unban"}
+      </Button>
+    ) : null;
+
   return (
     <>
-      <div className="overflow-x-auto rounded-lg border border-border">
+      {/* Mobile — Card layout, sm er nichey */}
+      <div className="space-y-3 sm:hidden">
+        {users.map((user) => (
+          <div key={user.id} className="rounded-lg border border-border bg-card p-4">
+            <div className="flex items-start justify-between gap-2">
+              <div className="min-w-0">
+                <p className="font-medium text-foreground truncate">{user.name}</p>
+                <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+              </div>
+              {user.status === "ACTIVE" ? (
+                <Badge className="bg-green-600 text-white hover:bg-green-600 shrink-0">Active</Badge>
+              ) : (
+                <Badge variant="destructive" className="shrink-0">Banned</Badge>
+              )}
+            </div>
+
+            <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
+              <span className="capitalize">{user.role.toLowerCase()}</span>
+              <span>{new Date(user.createdAt).toLocaleDateString()}</span>
+            </div>
+
+            {user.role !== "ADMIN" && (
+              <div className="mt-3">
+                <ActionButton user={user} />
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop — Table layout, sm er upore */}
+      <div className="hidden overflow-x-auto rounded-lg border border-border sm:block">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-border bg-muted/30">
@@ -81,15 +123,7 @@ export function UserManagementTable({ users }: Props) {
                   {new Date(user.createdAt).toLocaleDateString()}
                 </td>
                 <td className="p-3">
-                  {user.role !== "ADMIN" && (
-                    <Button
-                      size="sm"
-                      variant={user.status === "ACTIVE" ? "destructive" : "secondary"}
-                      onClick={() => openConfirmDialog(user)}
-                    >
-                      {user.status === "ACTIVE" ? "Ban" : "Unban"}
-                    </Button>
-                  )}
+                  <ActionButton user={user} />
                 </td>
               </tr>
             ))}
@@ -97,7 +131,7 @@ export function UserManagementTable({ users }: Props) {
         </table>
       </div>
 
-      {/* Confirmation Dialog */}
+      {/* Confirmation Dialog — dutoi layout share kore */}
       <Dialog open={!!selectedUser} onOpenChange={(open) => !open && closeDialog()}>
         <DialogContent>
           <DialogHeader>

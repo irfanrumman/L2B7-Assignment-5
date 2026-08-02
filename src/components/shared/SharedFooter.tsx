@@ -32,7 +32,7 @@ export function Footer() {
 
           {/* Copyright */}
           <p className="text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} RentNest. All rights reserved.
+            &copy; 2026 RentNest. All rights reserved.
           </p>
         </div>
       </div>
