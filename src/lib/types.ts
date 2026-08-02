@@ -33,7 +33,6 @@ export interface LandlordRef {
   role: "LANDLORD";
 }
 
-
 export interface PropertyListItem extends Property {
   category: CategoryRef;
   landlord: LandlordRef;
@@ -61,7 +60,6 @@ export interface PaginationMeta {
   total: number;
   totalPages: number;
 }
-
 
 export interface PropertiesApiResponse {
   success: boolean;
@@ -147,7 +145,6 @@ export interface RegisterPayload {
   role: Extract<UserRole, "TENANT" | "LANDLORD">;
 }
 
-
 export interface CreatePropertyPayload {
   title: string;
   description: string;
@@ -161,7 +158,6 @@ export interface CreatePropertyActionState {
   success: boolean;
   message: string;
 }
-
 
 export interface TenantRef {
   id: string;
@@ -200,7 +196,6 @@ export interface RentalRequestsApiResponse {
   };
 }
 
-
 export interface LandlordRentalRef {
   id: string;
   name: string;
@@ -217,7 +212,6 @@ export interface PropertyRentalRef {
   isAvailable: boolean;
   landlord: LandlordRentalRef;
 }
-
 
 export interface TenantRentalRequest {
   id: string;
@@ -265,7 +259,6 @@ export interface RentalRequestPaymentRef {
   property: PropertyPaymentRef;
 }
 
-
 export interface PaymentListItem {
   id: string;
   rentalRequestId: string;
@@ -289,7 +282,6 @@ export interface PaymentsApiResponse {
     meta: PaginationMeta;
   };
 }
-
 
 export interface LandlordPaymentRef {
   id: string;
@@ -330,7 +322,6 @@ export interface RentalRequestDetailApiResponse {
   data: RentalRequestDetail;
 }
 
-
 export interface CreatePaymentResponseData {
   checkoutUrl: string;
   sessionId: string;
@@ -347,7 +338,6 @@ export interface CreatePaymentResponseData {
     updatedAt: string;
   };
 }
-
 
 export interface ConfirmPaymentResponseData {
   id: string;
@@ -382,73 +372,6 @@ export interface AdminUsersApiResponse {
   };
 }
 
-export interface TenantRef {
-  id: string;
-  name: string;
-  email: string;
-  phone: string | null;
-}
-
-export interface LandlordBriefRef {
-  id: string;
-  name: string;
-  email: string;
-}
-
-export interface PropertyWithLandlordBrief {
-  id: string;
-  title: string;
-  location: string;
-  landlord: LandlordBriefRef;
-}
-
-export interface AdminPaymentRef {
-  id: string;
-  rentalRequestId: string;
-  transactionId: string;
-  amount: number;
-  method: PaymentMethod;
-  provider: PaymentProvider;
-  status: PaymentStatus;
-  paidAt: string | null;
-  createdAt: string;
-  updatedAt: string;
-}
-
-
-export interface AdminRentalRequestItem {
-  id: string;
-  tenantId: string;
-  propertyId: string;
-  status: RentalRequestStatus;
-  moveInDate: string;
-  moveOutDate: string;
-  message: string;
-  createdAt: string;
-  updatedAt: string;
-  tenant: TenantRef;
-  property: PropertyWithLandlordBrief;
-  payment: AdminPaymentRef[];
-}
-
-export interface AdminRentalsApiResponse {
-  success: boolean;
-  statusCode: number;
-  message: string;
-  data: {
-    meta: PaginationMeta;
-    data: AdminRentalRequestItem[];
-  };
-}
-
-
-export interface TenantRef {
-  id: string;
-  name: string;
-  email: string;
-  phone: string | null;
-}
-
 export interface LandlordBriefRef {
   id: string;
   name: string;
@@ -499,7 +422,6 @@ export interface AdminRentalsApiResponse {
     data: AdminRentalRequestItem[];
   };
 }
-
 
 export interface LandlordFullRef {
   id: string;
@@ -515,10 +437,27 @@ export interface CategoryFullRef {
   description: string;
 }
 
+export interface ReviewTenantRef {
+  id: string;
+  name: string;
+}
+
+export interface ReviewWithTenant {
+  id: string;
+  tenantId: string;
+  propertyId: string;
+  rentalRequestId: string;
+  rating: number;
+  comment: string;
+  createdAt: string;
+  tenant: ReviewTenantRef;
+}
+
+// GET /api/properties/:id endpoint er shape — reviews e tenant info soho
 export interface PropertyDetail extends Property {
   landlord: LandlordFullRef;
   category: CategoryFullRef;
-  reviews: Review[];
+  reviews: ReviewWithTenant[];
 }
 
 export interface CreateRentalRequestPayload {
@@ -546,4 +485,10 @@ export interface CreateRentalRequestResponseData {
     image: string | null;
   };
   tenant: TenantRef;
+}
+
+export interface CreateReviewPayload {
+  rentalRequestId: string;
+  rating: number;
+  comment: string;
 }

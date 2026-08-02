@@ -93,6 +93,7 @@ export default async function PropertyDetailPage({ params }: Props) {
             </div>
           </Card>
 
+          {/* Reviews */}
           <Card className="p-6">
             <h2 className="font-semibold text-foreground mb-4">
               Reviews ({property.reviews.length})
@@ -100,17 +101,23 @@ export default async function PropertyDetailPage({ params }: Props) {
             {property.reviews.length === 0 ? (
               <p className="text-sm text-muted-foreground">No reviews yet.</p>
             ) : (
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {property.reviews.map((review) => (
-                  <div key={review.id} className="border-t border-border pt-3 first:border-t-0 first:pt-0">
-                    <div className="flex items-center gap-1 mb-1">
+                  <div key={review.id} className="border-t border-border pt-4 first:border-t-0 first:pt-0">
+                    <div className="flex items-center justify-between gap-2 flex-wrap">
+                      <p className="font-medium text-foreground">{review.tenant.name}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {new Date(review.createdAt).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-1 mt-1 mb-1">
                       {Array.from({ length: 5 }).map((_, i) => (
                         <span key={i} className={i < review.rating ? "text-yellow-500" : "text-muted"}>
                           ★
                         </span>
                       ))}
                     </div>
-                    <p className="text-sm text-foreground">{review.comment}</p>
+                    <p className="text-sm text-muted-foreground">{review.comment}</p>
                   </div>
                 ))}
               </div>

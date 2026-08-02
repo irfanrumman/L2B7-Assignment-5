@@ -13,7 +13,7 @@ type GetRentalDetailResult =
   | { success: true; data: RentalRequestDetail }
   | { success: false; message: string; data: null };
 
-  
+
 
 export const getRentalRequestDetailAction = async (
   requestId: string
@@ -62,6 +62,46 @@ export const createPaymentAction = async (rentalRequestId: string) => {
     }
 
     return { success: true, checkoutUrl: result.data.checkoutUrl as string };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Something went wrong" };
+  }
+};
+
+
+
+
+
+export const createReviewAction = async (
+  rentalRequestId: string,
+  prevState: { success: boolean; message: string },
+  formData: FormData
+) => {
+  try {
+    const headers = await getAuthHeader();
+    if (!headers) {
+      return { success: false, message: "Unauthorized" };
+    }
+
+    const payload = {
+      rentalRequestId,
+      rating: Number(formData.get("rating")),
+      comment: formData.get("comment"),
+    };
+
+    const res = await fetch(`${process.env.BACKEND_API_URL}/api/reviews`, {
+      method: "POST",
+      headers: { ...headers, "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    const result = await res.json();
+
+    if (!result.success) {
+      return { success: false, message: result.message || "Failed to submit review" };
+    }
+
+    return { success: true, message: result.message || "Review submitted successfully!" };
   } catch (error) {
     console.error(error);
     return { success: false, message: "Something went wrong" };

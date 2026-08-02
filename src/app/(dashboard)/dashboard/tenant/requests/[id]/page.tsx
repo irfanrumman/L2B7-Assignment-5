@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { RentalRequestStatus } from "@/lib/types";
 import { getRentalRequestDetailAction } from "../../_actions/tenantPaymentActions";
+import { ReviewDialog } from "../../_components/ReviewDialog";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -82,11 +83,15 @@ export default async function RentalRequestDetailPage({ params }: Props) {
             </p>
           </div>
 
-          {/* Shudhu APPROVED status e Pay Now button dekhabo */}
           {request.status === "APPROVED" && (
             <Link href={`/dashboard/tenant/requests/${request.id}/pay`}>
               <Button size="lg">Pay Now</Button>
             </Link>
+          )}
+
+          {/* COMPLETED status e, review na thakle "Leave a Review" button dekhabo */}
+          {request.status === "COMPLETED" && !request.review && (
+            <ReviewDialog rentalRequestId={request.id} />
           )}
         </div>
 
