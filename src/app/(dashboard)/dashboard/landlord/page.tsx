@@ -1,3 +1,6 @@
+
+
+
 import Link from "next/link";
 import { Home, Users, DollarSign, ArrowRight } from "lucide-react";
 import { getLandlordOverview } from "./_actions/landlordOverviewActions";
@@ -43,28 +46,30 @@ export default async function LandlordDashboard() {
     "group inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 hover:shadow-md hover:gap-3";
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-8 sm:space-y-10">
       <div>
-        <h1 className="text-3xl font-bold text-foreground">Landlord Dashboard</h1>
-        <p className="text-muted-foreground">Manage your properties and rental requests</p>
+        <h1 className="text-2xl font-bold text-foreground sm:text-3xl">Landlord Dashboard</h1>
+        <p className="text-sm text-muted-foreground sm:text-base">
+          Manage properties and rental requests
+        </p>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-6">
         {statsCards.map((card) => {
           const Icon = card.icon;
           return (
-            <div key={card.title} className="rounded-lg border border-border bg-card p-6">
+            <div key={card.title} className="rounded-lg border border-border bg-card p-4 sm:p-6">
               <div className="flex items-start justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground mb-1">{card.title}</p>
-                  <p className="text-3xl font-bold text-foreground">{card.value}</p>
+                  <p className="text-2xl font-bold text-foreground sm:text-3xl">{card.value}</p>
                   {card.description && (
                     <p className="text-xs text-muted-foreground mt-1">{card.description}</p>
                   )}
                 </div>
-                <div className={`${card.color} rounded-lg p-3`}>
-                  <Icon className="h-6 w-6" />
+                <div className={`${card.color} rounded-lg p-2.5 sm:p-3`}>
+                  <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
                 </div>
               </div>
             </div>
@@ -74,7 +79,7 @@ export default async function LandlordDashboard() {
 
       {/* Properties preview */}
       <section className="space-y-4">
-        <h2 className="text-2xl font-bold text-foreground">Your Properties</h2>
+        <h2 className="text-xl font-bold text-foreground sm:text-2xl">My Properties</h2>
         <LandlordPropertyList properties={properties.items} />
         <div className="flex justify-center pt-2">
           <Link href="/dashboard/landlord/properties" className={viewMoreClass}>
@@ -86,10 +91,10 @@ export default async function LandlordDashboard() {
 
       {/* Incoming requests preview */}
       <section className="space-y-4">
-        <h2 className="text-2xl font-bold text-foreground">Incoming Requests</h2>
+        <h2 className="text-xl font-bold text-foreground sm:text-2xl">Incoming Requests</h2>
         <RequestList requests={requests.items} />
         <div className="flex justify-center pt-2">
-          <Link href="/dashboard/landlord/rental-requests" className={viewMoreClass}>
+          <Link href="/dashboard/landlord/requests" className={viewMoreClass}>
             View More
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
           </Link>

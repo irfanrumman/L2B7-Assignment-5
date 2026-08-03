@@ -1,5 +1,6 @@
 "use server";
 
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/dist/server/request/cookies";
 
@@ -225,14 +226,19 @@ export const getLandlordPropertiesAction = async () => {
       return { success: false, message: "Unauthorized", data: [], meta: null };
     }
 
+    const decodedToken = jwt.decode(accessToken) as JwtPayload;
+
+
     const res = await fetch(`${process.env.BACKEND_API_URL}/api/properties`, {
       headers: { Cookie: `accessToken=${accessToken}` },
       cache: "no-store",
     });
 
-    const result = await res.json();
 
-    if (!result.success) {
+  const result = await res.json(); 
+
+
+   if (!result.success) {
       return {
         success: false,
         message: result.message || "Failed to fetch properties",
@@ -241,10 +247,19 @@ export const getLandlordPropertiesAction = async () => {
       };
     }
 
+    const { data } = result.data;
+
+    const myData = data.filter((p: any) => p.landlordId === decodedToken?.id);
+
+   
+
+
+   
+
     return {
       success: true,
-      data: result.data.data,   // 👈 double-nested response, actual array এখানে
-      meta: result.data.meta,   // 👈 pagination info
+      data: myData,   
+      meta: result.data.meta,  //pagination info
     };
   } catch (error) {
     console.error(error);

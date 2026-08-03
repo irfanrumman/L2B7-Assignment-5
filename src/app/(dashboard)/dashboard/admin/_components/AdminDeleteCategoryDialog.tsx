@@ -11,6 +11,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { deleteCategoryAction } from "../_actions/adminCategoryActions";
 
@@ -32,14 +33,16 @@ export function DeleteCategoryDialog({ categoryId, categoryName }: { categoryId:
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <Button size="sm" variant="destructive" className="gap-1.5" onClick={() => setOpen(true)}>
-        <Trash2 className="h-3.5 w-3.5" />
-        Delete
-      </Button>
+      <DialogTrigger asChild>
+        <Button size="sm" variant="destructive" className="gap-1.5">
+          <Trash2 className="h-3.5 w-3.5" />
+          Delete
+        </Button>
+      </DialogTrigger>
 
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Delete "{categoryName}"?</DialogTitle>
+          <DialogTitle>Delete &quot;{categoryName}&quot;?</DialogTitle>
           <DialogDescription>
             This action cannot be undone. Properties using this category may be affected.
           </DialogDescription>

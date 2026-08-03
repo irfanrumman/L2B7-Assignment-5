@@ -295,6 +295,17 @@ export interface PropertyWithLandlord {
   title: string;
   location: string;
   price: number;
+    image: string | null
+  isAvailable: boolean;
+  landlord: LandlordPaymentRef;
+}
+
+export interface PropertyWithLandlord {
+  id: string;
+  title: string;
+  location: string;
+  price: number;
+  image: string | null; // 👈 এই লাইনটা যোগ করো
   isAvailable: boolean;
   landlord: LandlordPaymentRef;
 }

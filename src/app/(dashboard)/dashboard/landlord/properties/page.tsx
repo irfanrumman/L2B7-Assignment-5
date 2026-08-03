@@ -12,7 +12,7 @@ export default async function LandlordPropertiesPage() {
         <div>
           <h1 className="text-2xl font-bold text-foreground">Property Management</h1>
           <p className="text-muted-foreground">
-            Edit or remove your listings. Availability updates automatically when a rental is approved.
+            Edit or remove listings.
           </p>
         </div>
         <Link href="/dashboard/landlord/properties/new">

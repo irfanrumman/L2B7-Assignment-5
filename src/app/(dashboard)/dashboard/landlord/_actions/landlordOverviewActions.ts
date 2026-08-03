@@ -34,6 +34,8 @@ export const getLandlordOverview = async (): Promise<GetOverviewResult> => {
     }
     const landlordId = meResult.data.user.id;
 
+   
+
     const [propertiesRes, requestsPreviewRes, requestsAllRes] = await Promise.all([
       fetch(`${process.env.BACKEND_API_URL}/api/properties?page=1&limit=1000`, {
         headers,
@@ -61,15 +63,16 @@ export const getLandlordOverview = async (): Promise<GetOverviewResult> => {
 
     const allProperties: PropertyListItem[] = propertiesJson.data.data;
     const myProperties = allProperties.filter((p) => p.landlord.id === landlordId);
+    
 
     const allRequests = requestsAllJson.data.data as (RentalRequestListItem & {
-      payment?: { status: string; amount: number }[]; // 👈 optional করে দিলাম, guaranteed না
+      payment?: { status: string; amount: number }[]; 
     })[];
 
     const totalEarnings = allRequests.reduce(
       (sum, req) =>
         sum + (req.payment ?? []).filter((p) => p.status === "PAID").reduce((s, p) => s + p.amount, 0),
-        // 👆 (req.payment ?? []) — payment na thakle empty array dhore nao, crash na kore
+       
       0
     );
 
@@ -85,7 +88,7 @@ export const getLandlordOverview = async (): Promise<GetOverviewResult> => {
       },
     };
   } catch (error) {
-    console.error("🔍 catch block error:", error);
+    console.error(" catch block error:", error);
     return { success: false, message: "Something went wrong", data: null };
   }
 };

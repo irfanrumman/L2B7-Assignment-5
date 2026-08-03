@@ -1,3 +1,5 @@
+
+
 import { Card } from "@/components/ui/card";
 import { FileText, Home, CheckCircle2, DollarSign } from "lucide-react";
 import { TenantRentalRequest, PaymentListItem } from "@/lib/types";
@@ -23,18 +25,18 @@ export function TenantStats({ rentals, payments }: Props) {
   ];
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
       {stats.map((stat) => {
         const Icon = stat.icon;
         return (
-          <Card key={stat.label} className="p-5">
+          <Card key={stat.label} className="p-4 sm:p-5">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">{stat.label}</p>
-                <p className="text-2xl font-bold text-foreground mt-1">{stat.value}</p>
+                <p className="text-xl font-bold text-foreground mt-1 sm:text-2xl">{stat.value}</p>
               </div>
-              <div className={`${stat.color} rounded-lg p-2.5`}>
-                <Icon className="h-5 w-5" />
+              <div className={`${stat.color} rounded-lg p-2 sm:p-2.5`}>
+                <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
               </div>
             </div>
           </Card>

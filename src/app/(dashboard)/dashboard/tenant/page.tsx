@@ -12,10 +12,12 @@ export default async function TenantDashboardPage() {
   const payments = paymentsResult.success ? paymentsResult.data : [];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-foreground">My Rentals</h1>
-        <p className="text-muted-foreground">Track your rental requests and payments.</p>
+        <h1 className="text-xl font-bold text-foreground sm:text-2xl">My Rentals</h1>
+        <p className="text-sm text-muted-foreground sm:text-base">
+          Track your rental requests and payments.
+        </p>
       </div>
 
       {!rentalsResult.success && !paymentsResult.success ? (

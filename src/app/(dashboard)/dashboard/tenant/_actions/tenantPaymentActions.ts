@@ -1,6 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { RentalRequestDetail } from "@/lib/types";
 
 const getAuthHeader = async () => {
@@ -13,19 +14,27 @@ type GetRentalDetailResult =
   | { success: true; data: RentalRequestDetail }
   | { success: false; message: string; data: null };
 
-
-
 export const getRentalRequestDetailAction = async (
   requestId: string
 ): Promise<GetRentalDetailResult> => {
   try {
-    const headers = await getAuthHeader();
-    if (!headers) {
+    const cookieStore = await cookies();
+    const accessToken = cookieStore.get("accessToken")?.value;
+
+    if (!accessToken) {
+      return { success: false, message: "Unauthorized", data: null };
+    }
+
+    // 👇 Token theke nijer tenantId ber kore anlam
+    const decodedToken = jwt.decode(accessToken) as JwtPayload;
+    const currentUserId = decodedToken?.id;
+
+    if (!currentUserId) {
       return { success: false, message: "Unauthorized", data: null };
     }
 
     const res = await fetch(`${process.env.BACKEND_API_URL}/api/rentals/${requestId}`, {
-      headers,
+      headers: { Cookie: `accessToken=${accessToken}` },
       cache: "no-store",
     });
 
@@ -35,12 +44,18 @@ export const getRentalRequestDetailAction = async (
       return { success: false, message: result.message || "Failed to fetch request", data: null };
     }
 
+    // 👇 Frontend nijei check korche — ei rental request ta ki actually ei logged-in tenant er?
+    if (result.data.tenantId !== currentUserId) {
+      return { success: false, message: "You are not authorized to view this request", data: null };
+    }
+
     return { success: true, data: result.data };
   } catch (error) {
     console.error(error);
     return { success: false, message: "Something went wrong", data: null };
   }
 };
+
 
 export const createPaymentAction = async (rentalRequestId: string) => {
   try {

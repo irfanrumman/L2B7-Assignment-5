@@ -19,11 +19,55 @@ export function RentalRequestCard({ request }: { request: TenantRentalRequest })
   const router = useRouter();
 
   const goToDetail = () => {
-    router.push(`/dashboard/tenant/requests/${request.id}`); // 👈 "rental-requests" theke "requests" e thik kora holo
+    router.push(`/dashboard/tenant/requests/${request.id}`);
   };
 
   const goToPayment = () => {
-    router.push(`/dashboard/tenant/requests/${request.id}/pay`); // 👈 ekhaneo thik kora holo
+    router.push(`/dashboard/tenant/requests/${request.id}/pay`);
+  };
+
+  // 👇 এই function টাই "renderAction" — component এর ভিতরে, JSX return করার আগে define করা
+  const renderAction = () => {
+    switch (request.status) {
+      case "PENDING":
+        return (
+          <Badge className="bg-yellow-500/10 text-yellow-600 border border-yellow-500/30 hover:bg-yellow-500/10 text-xs dark:text-yellow-400">
+            Wait for Approval
+          </Badge>
+        );
+      case "APPROVED":
+        return (
+          <Button
+            size="sm"
+            onClick={(e) => {
+              e.stopPropagation();
+              goToPayment();
+            }}
+          >
+            Pay Now
+          </Button>
+        );
+      case "REJECTED":
+        return (
+          <Badge variant="outline" className="text-xs text-destructive border-destructive">
+            Request Rejected
+          </Badge>
+        );
+      case "ACTIVE":
+        return (
+          <Badge variant="outline" className="text-xs">
+            Currently Renting
+          </Badge>
+        );
+      case "COMPLETED":
+        return (
+          <Badge variant="outline" className="text-xs">
+            Rental Completed
+          </Badge>
+        );
+      default:
+        return null;
+    }
   };
 
   return (
@@ -31,7 +75,6 @@ export function RentalRequestCard({ request }: { request: TenantRentalRequest })
       onClick={goToDetail}
       className="group flex h-32 w-full cursor-pointer overflow-hidden rounded-xl border border-border bg-card transition-all hover:shadow-md hover:border-primary/50"
     >
-      {/* Left — Image */}
       <div className="relative h-full w-28 shrink-0 overflow-hidden bg-muted sm:w-36">
         {request.property.image ? (
           <Image
@@ -48,7 +91,6 @@ export function RentalRequestCard({ request }: { request: TenantRentalRequest })
         )}
       </div>
 
-      {/* Right — info + action */}
       <div className="flex min-w-0 flex-1 flex-col justify-between p-4">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
@@ -63,22 +105,7 @@ export function RentalRequestCard({ request }: { request: TenantRentalRequest })
 
         <div className="flex items-center justify-between gap-2">
           <p className="font-bold text-primary">${request.property.price.toLocaleString()}</p>
-
-          {request.status === "APPROVED" ? (
-            <Button
-              size="sm"
-              onClick={(e) => {
-                e.stopPropagation();
-                goToPayment();
-              }}
-            >
-              Pay Now
-            </Button>
-          ) : (
-            <Badge variant="outline" className="text-xs">
-              Wait for Approval
-            </Badge>
-          )}
+          {renderAction()}
         </div>
       </div>
     </div>

@@ -14,6 +14,7 @@ interface OverviewData {
   properties: { items: PropertyListItem[]; meta: PaginationMeta };
   rentals: { items: AdminRentalRequestItem[]; meta: PaginationMeta };
   totalRevenue: number;
+  pendingCount: number;
 }
 
 type GetOverviewResult =
@@ -51,6 +52,10 @@ export const getAdminOverviewAction = async (): Promise<GetOverviewResult> => {
       0
     );
 
+    const pendingCount = (rentalsAllJson.data.data as AdminRentalRequestItem[]).filter(
+      (rental) => rental.status === "PENDING"
+    ).length;
+
     return {
       success: true,
       data: {
@@ -58,6 +63,7 @@ export const getAdminOverviewAction = async (): Promise<GetOverviewResult> => {
         properties: { items: propertiesJson.data.data, meta: propertiesJson.data.meta },
         rentals: { items: rentalsPreviewJson.data.data, meta: rentalsPreviewJson.data.meta },
         totalRevenue,
+        pendingCount,
       },
     };
   } catch (error) {

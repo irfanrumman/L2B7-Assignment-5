@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useOptimistic } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -61,7 +61,7 @@ function RequestCard({
 
         {request.message && (
           <p className="text-sm text-muted-foreground mt-2 italic line-clamp-2">
-            "{request.message}"
+            &quot;{request.message}&quot;
           </p>
         )}
       </div>
@@ -89,25 +89,36 @@ export function RequestList({ requests }: Props) {
   const [isPending, startTransition] = useTransition();
   const [activeTab, setActiveTab] = useState<TabKey>("PENDING");
 
+  // 👇 Optimistic state — server response er age e UI update kore dekhay
+  const [optimisticRequests, setOptimisticStatus] = useOptimistic(
+    requests,
+    (state, { id, status }: { id: string; status: RentalRequestStatus }) =>
+      state.map((req) => (req.id === id ? { ...req, status } : req))
+  );
+
   const handleUpdate = (id: string, status: "APPROVED" | "REJECTED") => {
     startTransition(async () => {
+      // 👇 Server response asar AGEI, immediately UI te reflect korchi
+      setOptimisticStatus({ id, status });
+
       const result = await updateRequestStatusAction(id, status);
       if (result.success) {
         toast.success(result.message);
       } else {
         toast.error(result.message);
+        // 👆 Fail korle, revalidatePath er maddhome asol data abar ashbe, optimistic change nijei revert hoye jabe
       }
     });
   };
 
-  const filteredRequests = requests.filter((r) => r.status === activeTab);
+  const filteredRequests = optimisticRequests.filter((r) => r.status === activeTab);
 
   return (
     <div className="space-y-6">
       {/* Tab bar */}
       <div className="flex flex-wrap gap-2 border-b border-border pb-2">
         {tabs.map((tab) => {
-          const count = requests.filter((r) => r.status === tab.key).length;
+          const count = optimisticRequests.filter((r) => r.status === tab.key).length;
           const isActive = activeTab === tab.key;
 
           return (
@@ -115,7 +126,7 @@ export function RequestList({ requests }: Props) {
               key={tab.key}
               onClick={() => setActiveTab(tab.key)}
               className={cn(
-                "rounded-md px-4 py-2 text-sm font-medium transition",
+                "rounded-md px-3 py-2 text-xs font-medium transition sm:px-4 sm:text-sm",
                 isActive
                   ? "bg-primary text-primary-foreground"
                   : "bg-muted text-muted-foreground hover:bg-muted/70"
@@ -127,7 +138,6 @@ export function RequestList({ requests }: Props) {
         })}
       </div>
 
-      {/* Selected tab er card gulo */}
       <div className="space-y-3">
         {filteredRequests.length === 0 ? (
           <div className="rounded-lg border border-dashed border-border p-12 text-center">

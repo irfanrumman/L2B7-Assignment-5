@@ -16,7 +16,7 @@ export default async function AdminDashboard() {
     );
   }
 
-  const { users, properties, rentals, totalRevenue } = result.data;
+  const { users, properties, rentals, totalRevenue, pendingCount } = result.data;
 
   const statsCards = [
     {
@@ -32,10 +32,10 @@ export default async function AdminDashboard() {
       color: "bg-secondary/10 text-secondary",
     },
     {
-      title: "Rental Requests",
-      value: rentals.meta.total.toLocaleString(),
+      title: "Pending Requests",
+      value: pendingCount.toLocaleString(),
       icon: FileText,
-      color: "bg-green-500/10 text-green-500",
+      color: "bg-yellow-500/10 text-yellow-500",
     },
     {
       title: "Total Revenue",
@@ -108,7 +108,6 @@ export default async function AdminDashboard() {
               key={property.id}
               className="overflow-hidden rounded-lg border border-border bg-card transition-all hover:shadow-md hover:border-primary/50"
             >
-              {/* Thumbnail */}
               <div className="relative h-32 w-full bg-muted sm:h-40">
                 {property.image ? (
                   <Image
@@ -124,7 +123,6 @@ export default async function AdminDashboard() {
                   </div>
                 )}
               </div>
-              {/* Info */}
               <div className="p-3 sm:p-4">
                 <p className="text-sm font-semibold text-foreground truncate sm:text-base">
                   {property.title}
