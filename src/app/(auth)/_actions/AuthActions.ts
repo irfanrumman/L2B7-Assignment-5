@@ -133,7 +133,7 @@ export const registerAction = async (
     role,
   };
 
-  // ধাপ ১ — Register কল করো
+
   const registerRes = await fetch(`${process.env.BACKEND_API_URL}/api/auth/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -143,10 +143,10 @@ export const registerAction = async (
   const registerResult = await registerRes.json();
 
   if (!registerResult.success) {
-    return registerResult; // register e error, ekhanei thamo
+    return registerResult; 
   }
 
-  // ধাপ ২ — Register success hole, shei email/password diyei server-side e login kore felo
+  
   const loginPayload = {
     email,
     password,
@@ -160,14 +160,14 @@ export const registerAction = async (
   const loginResult = await loginRes.json();
 
   if (!loginResult.success) {
-    // Register hoyeche, kintu auto-login e kono karone fail — user ke manually login korte bolo
+    
     return {
       success: true,
       message: "Account created! Please log in.",
     };
   }
 
-  // ধাপ ৩ — Login এর মতোই cookie set করো
+
   const cookieStore = await cookies();
 
   cookieStore.set("accessToken", loginResult.data.accessToken, {
@@ -185,17 +185,6 @@ export const registerAction = async (
   const decodedToken = jwt.decode(loginResult.data.accessToken) as JwtPayload;
 
   let finalRedirect = "/";
-  // switch (decodedToken.role) {
-  //   case "TENANT":
-  //     finalRedirect = "/dashboard/tenant";
-  //     break;
-  //   case "LANDLORD":
-  //     finalRedirect = "/dashboard/landlord";
-  //     break;
-  //   case "ADMIN":
-  //     finalRedirect = "/dashboard/admin";
-  //     break;
-  // }
 
   if (
     redirectTo &&

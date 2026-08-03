@@ -33,19 +33,6 @@ const LoginForm = () => {
 
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
-  // useEffect(() => {
-  //   if (!state) return;
-
-  //   if (state.success) {
-  //     toast.success(state.message || "Login Successful");
-
-  //     refetchUser().then(() => {
-  //       router.push(state.redirectTo || "/");
-  //     });
-  //   } else {
-  //     toast.error(state.message || "Login failed");
-  //   }
-  // }, [state, refetchUser, router]);
 
   useEffect(() => {
   if (!state) return;

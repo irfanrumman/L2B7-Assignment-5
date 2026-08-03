@@ -28,8 +28,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // 👇 useCallback: এই function এর reference এখন stable থাকবে,
-  // প্রতি render এ নতুন তৈরি হবে না (dependency array খালি, তাই কখনো বদলাবে না)
   const fetchCurrentUser = useCallback(async () => {
     try {
       const result = await getMe();
@@ -56,8 +54,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
   }, []);
 
-  // 👇 useMemo: context এর value object-ও stable রাখছি,
-  // নাহলে user/loading না বদলেও object reference প্রতি render এ নতুন হতো
+  
   const value = useMemo(
     () => ({
       user,
