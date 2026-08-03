@@ -67,16 +67,23 @@ export async function proxy(request: NextRequest) {
     (route) => pathname === route || pathname.startsWith(route + "/")
   );
 
-  if (!accessToken && !isPublicRoute && !isAuthRoute) {
+
+  const isAuthenticated = Boolean(decodedAccessToken?.success);
+
+ 
+  if (!isAuthenticated && !isPublicRoute && !isAuthRoute) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  if (pathname.startsWith("/dashboard/tenant") && userRole !== "TENANT") {
-    return NextResponse.redirect(new URL("/not-found", request.url));
-  } else if (pathname.startsWith("/dashboard/landlord") && userRole !== "LANDLORD") {
-    return NextResponse.redirect(new URL("/not-found", request.url));
-  } else if (pathname.startsWith("/dashboard/admin") && userRole !== "ADMIN") {
-    return NextResponse.redirect(new URL("/not-found", request.url));
+ 
+  if (isAuthenticated) {
+    if (pathname.startsWith("/dashboard/tenant") && userRole !== "TENANT") {
+      return NextResponse.redirect(new URL("/not-found", request.url));
+    } else if (pathname.startsWith("/dashboard/landlord") && userRole !== "LANDLORD") {
+      return NextResponse.redirect(new URL("/not-found", request.url));
+    } else if (pathname.startsWith("/dashboard/admin") && userRole !== "ADMIN") {
+      return NextResponse.redirect(new URL("/not-found", request.url));
+    }
   }
 
   return NextResponse.next();
