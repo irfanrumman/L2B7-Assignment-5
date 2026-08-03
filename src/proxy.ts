@@ -38,6 +38,7 @@ export async function proxy(request: NextRequest) {
   }
 
   let userRole = null;
+  
 
   if (!decodedAccessToken?.success) {
     request.cookies.delete("accessToken");
