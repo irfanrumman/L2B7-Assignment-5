@@ -1,18 +1,11 @@
-import { Suspense } from "react";
-import { getPropertiesAction, getCategoriesAction } from "../_actions/adminPropertyActions";
+import { getPropertiesAction } from "../_actions/adminPropertyActions";
 import { AdminPropertyCard } from "../_components/AdminPropertyCard";
-import  PropertyFiltersForm  from "@/components/shared/PropertyFiltersForm";
 import PropertyPagination from "@/components/shared/PropertyPagination";
+import { Suspense } from "react";
 
 type Props = {
   searchParams: Promise<{
     page?: string;
-    search?: string;
-    location?: string;
-    categoryId?: string;
-    minPrice?: string;
-    maxPrice?: string;
-    isAvailable?: string;
   }>;
 };
 
@@ -20,19 +13,10 @@ export default async function AdminPropertiesPage({ searchParams }: Props) {
   const params = await searchParams;
   const page = Number(params.page) || 1;
 
-  const [result, categories] = await Promise.all([
-    getPropertiesAction({
-      page: String(page),
-      limit: "9",
-      search: params.search,
-      location: params.location,
-      categoryId: params.categoryId,
-      minPrice: params.minPrice,
-      maxPrice: params.maxPrice,
-      isAvailable: params.isAvailable,
-    }),
-    getCategoriesAction(),
-  ]);
+  const result = await getPropertiesAction({
+    page: String(page),
+    limit: "9",
+  });
 
   return (
     <div className="space-y-6">
@@ -42,20 +26,6 @@ export default async function AdminPropertiesPage({ searchParams }: Props) {
           View all platform properties. Mark properties as featured to show them on the homepage.
         </p>
       </div>
-
-      <Suspense fallback={<div className="h-16" />}>
-        <PropertyFiltersForm
-          categories={categories}
-          defaultValues={{
-            search: params.search,
-            location: params.location,
-            categoryId: params.categoryId,
-            minPrice: params.minPrice,
-            maxPrice: params.maxPrice,
-            isAvailable: params.isAvailable,
-          }}
-        />
-      </Suspense>
 
       {!result.success ? (
         <p className="text-destructive">{result.message}</p>

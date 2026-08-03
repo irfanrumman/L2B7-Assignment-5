@@ -1,3 +1,6 @@
+"use client";
+
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { CategoryRef } from "@/lib/types";
@@ -17,6 +20,28 @@ interface Props {
 }
 
 export default function PropertyFiltersForm({ categories, defaultValues }: Props) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); // 👈 browser er default full-page submission atkacchi
+
+    const formData = new FormData(e.currentTarget);
+    const params = new URLSearchParams(searchParams.toString());
+
+    for (const [key, value] of formData.entries()) {
+      if (value) {
+        params.set(key, value.toString());
+      } else {
+        params.delete(key);
+      }
+    }
+    params.set("page", "1"); // notun filter e page 1 e ferot
+
+    router.push(`${pathname}?${params.toString()}`);
+  };
+
   return (
     <div className="mb-8 space-y-4">
       <div className="grid gap-3 sm:grid-cols-2">
@@ -25,7 +50,7 @@ export default function PropertyFiltersForm({ categories, defaultValues }: Props
       </div>
 
       <form
-        method="GET"
+        onSubmit={handleSubmit}
         className="rounded-lg border bg-card p-4 flex flex-col gap-4 sm:flex-row sm:items-end sm:flex-wrap"
       >
         <input type="hidden" name="search" value={defaultValues.search || ""} />
@@ -33,17 +58,17 @@ export default function PropertyFiltersForm({ categories, defaultValues }: Props
 
         <div className="flex-1 min-w-35">
           <label className="mb-2 block text-sm font-medium">Location</label>
-          <Input name="location" placeholder="Dhaka, ..." className="border border-border w-[60%]" defaultValue={defaultValues.location} />
+          <Input name="location" placeholder="Dhaka, ..." defaultValue={defaultValues.location} />
         </div>
 
         <div className="w-full sm:w-32">
           <label className="mb-2 block text-sm font-medium">Min Price</label>
-          <Input name="minPrice" type="number" placeholder="0" className="border border-border w-full" defaultValue={defaultValues.minPrice} />
+          <Input name="minPrice" type="number" placeholder="0" defaultValue={defaultValues.minPrice} />
         </div>
 
         <div className="w-full sm:w-32">
           <label className="mb-2 block text-sm font-medium">Max Price</label>
-          <Input name="maxPrice" type="number" className="border border-border w-full" placeholder="100000" defaultValue={defaultValues.maxPrice} />
+          <Input name="maxPrice" type="number" placeholder="100000" defaultValue={defaultValues.maxPrice} />
         </div>
 
         <div className="w-full sm:w-36">
