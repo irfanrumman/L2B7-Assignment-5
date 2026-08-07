@@ -8,7 +8,7 @@ import { jwtUtils } from "./lib/jwtUtls";
 
 const AUTH_ROUTES = ["/login", "/register"];
 
-const PUBLIC_ROUTES = ["/", "/properties"];
+const PUBLIC_ROUTES = ["/", "/properties", "/about", "/blog"];
 
 
 export async function proxy(request: NextRequest) {

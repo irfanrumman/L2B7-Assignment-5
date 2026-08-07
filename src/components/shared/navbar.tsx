@@ -11,7 +11,7 @@ import {
   LogOut,
   LayoutDashboard,
   Settings,
-  User as UserIcon, 
+  User as UserIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/lib/theme-context";
@@ -25,14 +25,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+// Public routes — visible whether logged in or out
 const navItems = [
   { label: "Home", href: "/" },
   { label: "Properties", href: "/properties" },
+  { label: "About", href: "/about" },
+  { label: "Blog", href: "/blog" },
 ];
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user, logout } = useAuth(); 
+  const { user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const router = useRouter();
 
@@ -43,9 +46,8 @@ export function Navbar() {
   };
 
   const handleDashboard = () => {
-    if (!user) return; 
+    if (!user) return;
 
- 
     if (user.role === "TENANT") {
       router.push("/dashboard/tenant");
     } else if (user.role === "LANDLORD") {
@@ -55,15 +57,21 @@ export function Navbar() {
     }
   };
 
+  const handleProfile = () => {
+    router.push("/dashboard/profile");
+  };
+
   return (
-    <nav className="sticky top-0 z-50 border-b border-border bg-card shadow-sm">
+    <nav className="sticky top-0 z-50 border-b border-border bg-card shadow-card">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center gap-2 font-bold text-2xl">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white font-bold">
+          <Link href="/" className="flex items-center gap-2 font-bold text-2xl shrink-0">
+            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-primary-foreground font-bold">
               N
             </div>
-            <span className="text-foreground hidden sm:inline">RentNest</span>
+            <span className="text-foreground hidden sm:inline font-display">
+              RentNest
+            </span>
           </Link>
 
           <div className="hidden md:flex items-center gap-1">
@@ -74,17 +82,37 @@ export function Navbar() {
                 </Button>
               </Link>
             ))}
+            {user && (
+              <Link href="/dashboard">
+                <Button variant="ghost" className="text-foreground">
+                  Dashboard
+                </Button>
+              </Link>
+            )}
           </div>
 
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" onClick={toggleTheme} aria-label="Toggle theme">
-              {theme === "light" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleTheme}
+              aria-label="Toggle theme"
+            >
+              {theme === "light" ? (
+                <Moon className="h-5 w-5" />
+              ) : (
+                <Sun className="h-5 w-5" />
+              )}
             </Button>
 
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="rounded-full w-10 h-10 bg-primary/10">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="rounded-full w-10 h-10 bg-primary/10"
+                  >
                     <UserIcon className="h-5 w-5 text-primary" />
                   </Button>
                 </DropdownMenuTrigger>
@@ -102,10 +130,10 @@ export function Navbar() {
                     <LayoutDashboard className="w-4 h-4 mr-2" />
                     <span>Dashboard</span>
                   </DropdownMenuItem>
-                  {/* <DropdownMenuItem>
-                    <Settings className="w-4 h-4 mr-2" />
-                    <span>Settings</span>
-                  </DropdownMenuItem> */}
+                  <DropdownMenuItem onClick={handleProfile}>
+                    <UserIcon className="w-4 h-4 mr-2" />
+                    <span>Profile</span>
+                  </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleLogout}>
                     <LogOut className="w-4 h-4 mr-2" />
@@ -141,7 +169,7 @@ export function Navbar() {
         <div className="border-t border-border bg-card md:hidden">
           <div className="flex flex-col gap-2 px-4 py-4">
             {navItems.map((item) => (
-              <Link key={item.href} href={item.href}>
+              <Link key={item.href} href={item.href} onClick={() => setIsMenuOpen(false)}>
                 <Button variant="ghost" className="w-full justify-start text-foreground">
                   {item.label}
                 </Button>
@@ -157,15 +185,31 @@ export function Navbar() {
                   <LayoutDashboard className="h-4 w-4" />
                   Dashboard
                 </Button>
-                <Button variant="outline" className="w-full justify-start gap-2" onClick={handleLogout}>
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start gap-2 text-foreground"
+                  onClick={handleProfile}
+                >
+                  <UserIcon className="h-4 w-4" />
+                  Profile
+                </Button>
+                <Button
+                  variant="outline"
+                  className="w-full justify-start gap-2"
+                  onClick={handleLogout}
+                >
                   <LogOut className="h-4 w-4" />
                   Logout
                 </Button>
               </>
             ) : (
               <>
-                <Button variant="outline" className="w-full" onClick={() => router.push("/login")}>
-                  Sign In
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => router.push("/login")}
+                >
+                  Login
                 </Button>
                 <Button className="w-full" onClick={() => router.push("/register")}>
                   Create Account

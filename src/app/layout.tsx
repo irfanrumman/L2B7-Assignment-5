@@ -1,12 +1,25 @@
 import type { Metadata, Viewport } from "next";
+import { Cormorant, Inter } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/lib/auth-context";
 import { ThemeProvider } from "@/lib/theme-context";
 import { Navbar } from "@/components/shared/navbar";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { ViewTransition } from "react";
 import { Toaster } from "sonner";
 import { Footer } from "@/components/shared/SharedFooter";
+
+const cormorant = Cormorant({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-display",
+  display: "swap",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "RentNest - Find Your Perfect Home",
@@ -35,8 +48,8 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   colorScheme: "light dark",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#F5F0EB" },
-    { media: "(prefers-color-scheme: dark)", color: "#1A1A1A" },
+    { media: "(prefers-color-scheme: light)", color: "#F2EBDC" },
+    { media: "(prefers-color-scheme: dark)", color: "#0A1211" },
   ],
 };
 
@@ -46,17 +59,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="bg-background">
-      <body className="antialiased">
+    <html
+      lang="en"
+      className={`bg-background ${cormorant.variable} ${inter.variable}`}
+    >
+      <body className="antialiased font-sans">
         <Toaster position="top-center" richColors />
         <TooltipProvider>
           <ThemeProvider>
             <AuthProvider>
               <div className="flex flex-col min-h-screen">
                 <Navbar />
-                {/* <ViewTransition> */}
-                  <main className="flex-1">{children}</main>
-                {/* </ViewTransition> */}
+             
+                <main className="flex-1">{children}</main>
+              
 
                 <Footer />
               </div>
