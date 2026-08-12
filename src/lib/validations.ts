@@ -5,7 +5,6 @@ import { z } from "zod";
 
 export const loginSchema = z.object({
   email: z.string().trim().min(1, "Email is required").email("Please enter a valid email address"),
-//   password: z.string().min(1, "Password is required"),
   password: z
     .string()
     .min(6, "Password must be at least 6 characters")
@@ -45,3 +44,24 @@ export const passwordFieldSchema = registerBaseSchema.shape.password;
 
 export const loginEmailFieldSchema = loginSchema.shape.email;
 export const loginPasswordFieldSchema = loginSchema.shape.password;
+
+
+export const profileSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(2, "Name must be at least 2 characters")
+    .optional(),
+
+  phone: z
+    .string()
+    .trim()
+    .nullable()
+    .optional()
+    .refine((val) => !val || /^[0-9+\-\s()]{6,20}$/.test(val), {
+      message: "Please enter a valid phone number",
+    }),
+});
+
+export const profileNameFieldSchema = profileSchema.shape.name;
+export const profilePhoneFieldSchema = profileSchema.shape.phone;

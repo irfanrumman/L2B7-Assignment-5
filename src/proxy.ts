@@ -1,4 +1,5 @@
 
+
 import { cookies } from 'next/headers';
 import { JwtPayload } from "jsonwebtoken";
 import type { NextRequest } from "next/server";
@@ -8,7 +9,7 @@ import { jwtUtils } from "./lib/jwtUtls";
 
 const AUTH_ROUTES = ["/login", "/register"];
 
-const PUBLIC_ROUTES = ["/", "/properties", "/about", "/blog"];
+const PUBLIC_ROUTES = ["/", "/properties", "/about", "/contact"];
 
 
 export async function proxy(request: NextRequest) {
@@ -96,6 +97,6 @@ export async function proxy(request: NextRequest) {
 export const config = {
     matcher: [
        
-        '/((?!api|_next/static|favicon.ico|_next/image|.*\\.png$).*)'
+        '/((?!api|_next/static|favicon.ico|_next/image|icon|apple-icon|.*\\.png$).*)'
     ],
 }

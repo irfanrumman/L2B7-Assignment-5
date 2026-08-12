@@ -12,6 +12,7 @@ import {
   LayoutDashboard,
   Settings,
   User as UserIcon,
+  UserCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/lib/theme-context";
@@ -30,7 +31,7 @@ const navItems = [
   { label: "Home", href: "/" },
   { label: "Properties", href: "/properties" },
   { label: "About", href: "/about" },
-  { label: "Blog", href: "/blog" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export function Navbar() {
@@ -86,6 +87,14 @@ export function Navbar() {
               <Link href="/dashboard">
                 <Button variant="ghost" className="text-foreground">
                   Dashboard
+                </Button>
+              </Link>
+            )}
+            {user && (
+              <Link href="/dashboard/profile">
+                <Button variant="ghost" className="gap-2 text-foreground">
+                  <UserCircle className="h-4 w-4" />
+                  {user.name}
                 </Button>
               </Link>
             )}
@@ -190,8 +199,8 @@ export function Navbar() {
                   className="w-full justify-start gap-2 text-foreground"
                   onClick={handleProfile}
                 >
-                  <UserIcon className="h-4 w-4" />
-                  Profile
+                  <UserCircle className="h-4 w-4" />
+                  {user.name}
                 </Button>
                 <Button
                   variant="outline"

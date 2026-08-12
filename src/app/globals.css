@@ -52,108 +52,108 @@
   --font-sans: var(--font-sans);
 }
 
-/* Light theme — Warm paper base + saturated deep teal accent */
+/* Light theme — Warm cream base + deep forest green primary, gold accent */
 :root {
   color-scheme: light;
 
-  --background: #f2ebdc;
-  --foreground: #1c211b;
+  --background: #f5f0e6;
+  --foreground: #1c2019;
 
   --card: #ffffff;
-  --card-foreground: #1c211b;
+  --card-foreground: #1c2019;
 
   --popover: #ffffff;
-  --popover-foreground: #1c211b;
+  --popover-foreground: #1c2019;
 
-  --primary: #0d5c56;
-  --primary-foreground: #f2ebdc;
+  --primary: #1a3d2e;
+  --primary-foreground: #f5f0e6;
 
-  --secondary: #e1ece9;
-  --secondary-foreground: #0d5c56;
+  --secondary: #ecdfc0;
+  --secondary-foreground: #7a5a28;
 
-  --muted: #e9e1cf;
+  --muted: #ece4d4;
   --muted-foreground: #6b6f60;
 
-  --accent: #e1ece9;
-  --accent-foreground: #0d5c56;
+  --accent: #c9a15c;
+  --accent-foreground: #1c2019;
 
   --destructive: #dc2626;
 
   --border: #e0d7c2;
-  --input: #ffffff;
-  --ring: #0d5c56;
+  --input: #c9bc9a;
+  --ring: #1a3d2e;
 
-  --chart-1: #0d5c56;
-  --chart-2: #3ecfb8;
-  --chart-3: #9cc2bc;
-  --chart-4: #6b7f5c;
-  --chart-5: #b8a888;
+  --chart-1: #1a3d2e;
+  --chart-2: #c9a15c;
+  --chart-3: #6b8f78;
+  --chart-4: #b8a888;
+  --chart-5: #7a5a28;
 
   --radius: 0.625rem;
 
   --sidebar: #ffffff;
-  --sidebar-foreground: #1c211b;
-  --sidebar-primary: #0d5c56;
-  --sidebar-primary-foreground: #f2ebdc;
-  --sidebar-accent: #e1ece9;
-  --sidebar-accent-foreground: #0d5c56;
+  --sidebar-foreground: #1c2019;
+  --sidebar-primary: #1a3d2e;
+  --sidebar-primary-foreground: #f5f0e6;
+  --sidebar-accent: #ecdfc0;
+  --sidebar-accent-foreground: #7a5a28;
   --sidebar-border: #e0d7c2;
-  --sidebar-ring: #0d5c56;
+  --sidebar-ring: #1a3d2e;
 
-  /* Elevation — soft teal-tinted shadow, not generic gray */
-  --shadow-card: 0 2px 8px -2px rgba(13, 92, 86, 0.10), 0 8px 24px -8px rgba(13, 92, 86, 0.12);
-  --shadow-card-hover: 0 4px 14px -2px rgba(13, 92, 86, 0.14), 0 16px 36px -10px rgba(13, 92, 86, 0.20);
+  /* Elevation — soft green-tinted shadow, not generic gray */
+  --shadow-card: 0 2px 8px -2px rgba(26, 61, 46, 0.10), 0 8px 24px -8px rgba(26, 61, 46, 0.12);
+  --shadow-card-hover: 0 4px 14px -2px rgba(26, 61, 46, 0.14), 0 16px 36px -10px rgba(26, 61, 46, 0.20);
 }
 
-/* Dark theme — Deep charcoal base + brighter teal accent */
+/* Dark theme — Deep charcoal-navy base + gold primary, green accent */
 .dark {
   color-scheme: dark;
 
-  --background: #0a1211;
+  --background: #12161f;
   --foreground: #f0ede6;
 
-  --card: #141d1b;
+  --card: #1a2029;
   --card-foreground: #f0ede6;
 
-  --popover: #141d1b;
+  --popover: #1a2029;
   --popover-foreground: #f0ede6;
 
-  --primary: #3ecfb8;
-  --primary-foreground: #0a1211;
+  --primary: #c9a15c;
+  --primary-foreground: #12161f;
 
-  --secondary: #1a2724;
-  --secondary-foreground: #3ecfb8;
+  --secondary: #22301f;
+  --secondary-foreground: #c9a15c;
 
-  --muted: #1c2622;
+  --muted: #1e232b;
   --muted-foreground: #9aa39f;
 
-  --accent: #1a2724;
-  --accent-foreground: #3ecfb8;
+  --accent: #2f4a3a;
+  --accent-foreground: #c9a15c;
 
   --destructive: #ef4444;
 
-  --border: #26332e;
-  --input: #141d1b;
-  --ring: #3ecfb8;
+  --border: #2a3038;
+  --input: #3f4a58;
+  --ring: #c9a15c;
 
-  --chart-1: #3ecfb8;
-  --chart-2: #0d5c56;
-  --chart-3: #6b7f5c;
+  --chart-1: #c9a15c;
+  --chart-2: #1a3d2e;
+  --chart-3: #6b8f78;
   --chart-4: #b8a888;
-  --chart-5: #9cc2bc;
+  --chart-5: #7a5a28;
 
-  --sidebar: #141d1b;
+  --sidebar: #1a2029;
   --sidebar-foreground: #f0ede6;
-  --sidebar-primary: #3ecfb8;
-  --sidebar-primary-foreground: #0a1211;
-  --sidebar-accent: #1a2724;
-  --sidebar-accent-foreground: #3ecfb8;
-  --sidebar-border: #26332e;
-  --sidebar-ring: #3ecfb8;
+  --sidebar-primary: #c9a15c;
+  --sidebar-primary-foreground: #12161f;
+  --sidebar-accent: #22301f;
+  --sidebar-accent-foreground: #c9a15c;
+  --sidebar-border: #2a3038;
+  --sidebar-ring: #c9a15c;
 
-  /* Elevation — teal glow instead of flat black shadow */
-  --shadow-card: 0 2px 8px -2px rgba(62, 207, 184, 0.06), 0 8px 24px -8px rgba(62, 207, 184, 0.10);
-  --shadow-card-hover: 0 4px 14px -2px rgba(62, 207, 184, 0.10), 0 16px 36px -10px rgba(62, 207, 184, 0.18);
+  /* Elevation — gold glow instead of flat black shadow */
+  --shadow-card: 0 2px 8px -2px rgba(201, 161, 92, 0.08), 0 8px 24px -8px rgba(201, 161, 92, 0.12);
+  --shadow-card-hover: 0 4px 14px -2px rgba(201, 161, 92, 0.12), 0 16px 36px -10px rgba(201, 161, 92, 0.20);
 }
 
 @layer base {

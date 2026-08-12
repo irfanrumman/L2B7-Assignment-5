@@ -12,7 +12,7 @@ export default function RegisterPage() {
         <div className="mb-6 flex flex-col gap-2 sm:mb-8">
           {/* className="font-[family-name:var(--font-display)] text-3xl font-semibold text-[var(--ink)]" */}
           {/* className="text-2xl font-bold text-foreground sm:text-3xl" */}
-          <h1 className="font-(family-name:--font-display) text-3xl font-semibold text-(--ink)">Create Account</h1>
+          <h1 className="font-display text-3xl font-semibold text-(--ink)">Create Account</h1>
 
           {/* className="text-sm text-muted-foreground sm:text-base" */}
           <p className="mt-2 text-sm text-muted-foreground sm:text-base">

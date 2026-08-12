@@ -9,9 +9,14 @@ interface Props {
 
 export function PropertyGrid({ properties }: Props) {
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="flex flex-wrap justify-center gap-6">
       {properties.map((property) => (
-        <PropertyCard key={property.id} {...property} />
+        <div
+          key={property.id}
+          className="w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc(25%-1.125rem)]"
+        >
+          <PropertyCard {...property} />
+        </div>
       ))}
     </div>
   );
